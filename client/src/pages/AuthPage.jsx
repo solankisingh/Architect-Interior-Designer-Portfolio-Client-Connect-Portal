@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock, Mail, User, Building, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, User, Building, AlertCircle, ArrowRight } from 'lucide-react';
 
 export default function AuthPage({ defaultMode = 'login' }) {
   const navigate = useNavigate();
@@ -29,16 +29,6 @@ export default function AuthPage({ defaultMode = 'login' }) {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const fillTestCredentials = (testEmail, testRole) => {
-    setFormData((prev) => ({
-      ...prev,
-      email: testEmail,
-      password: 'password123'
-    }));
-    setMode('login');
-    setError('');
   };
 
   const handleAuthSubmit = async (e) => {
@@ -69,62 +59,32 @@ export default function AuthPage({ defaultMode = 'login' }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="min-h-[calc(100vh-64px)] w-full bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-6">
           <Link to="/" className="inline-flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded bg-slate-900 text-white flex items-center justify-center font-bold">
-              <Building className="w-4 h-4 text-amber-400" />
+            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold">
+              <Building className="w-5 h-5 text-amber-400" />
             </div>
-            <span className="text-xl font-bold text-gray-900">
+            <span className="text-2xl font-bold text-gray-900 font-sans">
               Arch<span className="text-amber-600">Connect</span>
             </span>
           </Link>
           <h2 className="text-2xl font-bold text-gray-900">
-            {mode === 'login' ? 'Sign in to your account' : 'Create an account'}
+            {mode === 'login' ? 'Sign In' : 'Create an Account'}
           </h2>
           <p className="text-xs text-gray-600 mt-1">
             {mode === 'login'
-              ? 'Enter your credentials to access your dashboard'
-              : 'Register as a client looking for architects, or as a design professional'}
+              ? 'Enter your email and password to access your portal'
+              : 'Register as a client or architecture / interior design professional'}
           </p>
         </div>
 
-        {/* Demo Helper Box (Clean human-developer style for professor / evaluation testing) */}
-        <div className="mb-5 bg-white border border-gray-200 rounded-lg p-3 shadow-xs">
-          <div className="flex items-center justify-between text-[11px] text-gray-500 mb-2 font-medium">
-            <span>Quick Test Logins (Password: password123):</span>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() => fillTestCredentials('client@architectportal.com', 'CLIENT')}
-              className="py-1 px-2 rounded border border-gray-200 hover:border-gray-400 text-[11px] text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 transition-colors text-center"
-            >
-              Client Demo
-            </button>
-            <button
-              type="button"
-              onClick={() => fillTestCredentials('designer@architectportal.com', 'DESIGNER')}
-              className="py-1 px-2 rounded border border-gray-200 hover:border-gray-400 text-[11px] text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 transition-colors text-center"
-            >
-              Architect Demo
-            </button>
-            <button
-              type="button"
-              onClick={() => fillTestCredentials('admin@architectportal.com', 'ADMIN')}
-              className="py-1 px-2 rounded border border-gray-200 hover:border-gray-400 text-[11px] text-gray-700 font-medium bg-gray-50 hover:bg-gray-100 transition-colors text-center"
-            >
-              Admin Demo
-            </button>
-          </div>
-        </div>
-
         {/* Card Form */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 sm:p-7 shadow-xs">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8 shadow-xs">
           {/* Switch Tab */}
-          <div className="flex border-b border-gray-200 mb-5">
+          <div className="flex border-b border-gray-200 mb-6">
             <button
               type="button"
               onClick={() => { setMode('login'); setError(''); }}
@@ -150,18 +110,17 @@ export default function AuthPage({ defaultMode = 'login' }) {
           </div>
 
           {error && (
-            <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           <form onSubmit={handleAuthSubmit} className="space-y-4">
-            {/* If Register: Role selector */}
             {mode === 'register' && (
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
-                  Account Type
+                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                  Registering as:
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
@@ -198,8 +157,8 @@ export default function AuthPage({ defaultMode = 'login' }) {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="e.g. Ar. Suresh Kumar or Sunita Patel"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 focus:outline-none"
+                  placeholder="Enter full name"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
                   required
                 />
               </div>
@@ -213,7 +172,7 @@ export default function AuthPage({ defaultMode = 'login' }) {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="name@example.com"
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
                 required
               />
             </div>
@@ -226,7 +185,7 @@ export default function AuthPage({ defaultMode = 'login' }) {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
                 required
               />
             </div>
@@ -241,8 +200,8 @@ export default function AuthPage({ defaultMode = 'login' }) {
                     name="studioName"
                     value={formData.studioName}
                     onChange={handleChange}
-                    placeholder="e.g. Kumar Architects"
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 focus:outline-none"
+                    placeholder="e.g. Design Atelier"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                     required
                   />
                 </div>
@@ -255,7 +214,7 @@ export default function AuthPage({ defaultMode = 'login' }) {
                       value={formData.location}
                       onChange={handleChange}
                       placeholder="e.g. Mumbai, Bangalore"
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                       required
                     />
                   </div>
@@ -266,7 +225,7 @@ export default function AuthPage({ defaultMode = 'login' }) {
                       name="experienceYears"
                       value={formData.experienceYears}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                     />
                   </div>
                 </div>
@@ -276,7 +235,7 @@ export default function AuthPage({ defaultMode = 'login' }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold tracking-wide transition-colors flex items-center justify-center gap-1.5 mt-2"
+              className="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 mt-3"
             >
               {loading ? 'Please wait...' : (
                 <>

@@ -82,19 +82,19 @@ export default function DesignerDetail() {
   const categories = ['All', ...new Set((designer.projects || []).map((p) => p.category))];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Cover Image */}
-      <div className="relative h-64 sm:h-80 w-full bg-slate-900 overflow-hidden">
+    <div className="w-full min-h-screen bg-gray-50 pb-20">
+      {/* Full-width Cover Header */}
+      <div className="relative h-72 sm:h-96 w-full bg-slate-900 overflow-hidden">
         <img
           src={designer.coverImageUrl}
           alt={designer.studioName}
           className="w-full h-full object-cover opacity-75"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" />
-        <div className="absolute top-4 left-4 sm:left-8">
+        <div className="absolute top-4 left-6 sm:left-12">
           <Link
             to="/designers"
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-black/60 hover:bg-black/80 text-white text-xs backdrop-blur-xs transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 hover:bg-black/80 text-white text-xs backdrop-blur-xs transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to All Studios</span>
@@ -103,14 +103,14 @@ export default function DesignerDetail() {
       </div>
 
       {/* Main Studio Profile Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 sm:-mt-20 relative z-10">
-        <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-6 sm:p-8 mb-8">
+      <div className="w-full px-6 sm:px-10 lg:px-16 -mt-20 sm:-mt-24 relative z-10">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8 mb-8">
           <div className="flex flex-col lg:flex-row items-start justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-start gap-5">
               <img
                 src={designer.avatarUrl}
                 alt={designer.studioName}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border-4 border-white shadow-sm bg-white shrink-0"
+                className="w-24 h-24 rounded-xl object-cover border-4 border-white shadow-sm bg-white shrink-0"
               />
 
               <div className="space-y-1.5">
@@ -184,7 +184,7 @@ export default function DesignerDetail() {
             <h3 className="text-xs uppercase font-semibold text-gray-400 tracking-wider mb-1.5">
               About the Firm
             </h3>
-            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed max-w-4xl">
+            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed max-w-5xl">
               {designer.bio}
             </p>
           </div>
@@ -192,9 +192,9 @@ export default function DesignerDetail() {
 
         {/* Portfolio Section */}
         <div className="mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-2 border-b border-gray-200">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                 Completed Projects ({designer.projects?.length || 0})
               </h2>
               <p className="text-xs text-gray-500">Click on any project to inspect photo gallery and design specifications.</p>
@@ -219,7 +219,7 @@ export default function DesignerDetail() {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProjects.map((p) => (
               <div
                 key={p.id}
