@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+client/dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Database
+server/prisma/*.db
+server/prisma/*.db-journal
+server/*.db
+server/*.db-journal
+
+# Uploads
+server/uploads/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

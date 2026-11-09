@@ -1,0 +1,12 @@
+{
+  "name": "archi-connect-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Architect & Interior Designer Portfolio & Client Connect Portal",
+  "scripts": {
+    "dev": "node dev.js",
+    "start": "node start.js",
+    "build": "node client/node_modules/vite/bin/vite.js build --config client/vite.config.js",
+    "seed": "node server/prisma/seed.js"
+  }
+}

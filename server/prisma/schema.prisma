@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  password        String
+  name            String
+  role            String           @default("CLIENT") // "CLIENT", "DESIGNER", "ADMIN"
+  phone           String?
+  avatar          String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  designerProfile DesignerProfile?
+  clientInquiries Inquiry[]        @relation("ClientInquiries")
+  reviews         Review[]         @relation("ClientReviews")
+  messages        InquiryMessage[]
+}
+
+model DesignerProfile {
+  id              String     @id @default(uuid())
+  userId          String     @unique
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studioName      String
+  tagline         String?
+  bio             String
+  location        String
+  experienceYears Int        @default(1)
+  budgetTier      String     @default("$$") // "$", "$$", "$$$", "$$$$"
+  specializations String     // e.g. "Residential, Commercial, Interior Styling, Landscape"
+  designStyles    String     // e.g. "Modern Minimalist, Scandinavian, Biophilic, Luxury Contemporary"
+  avatarUrl       String?
+  coverImageUrl   String?
+  accreditations  String?    // e.g. "Council of Architecture (COA), IIID Member"
+  website         String?
+  phone           String?
+  isVerified      Boolean    @default(true)
+  featured        Boolean    @default(false)
+  averageRating   Float      @default(5.0)
+  reviewCount     Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  projects        Project[]
+  inquiries       Inquiry[]  @relation("DesignerInquiries")
+  reviews         Review[]   @relation("DesignerReviews")
+}
+
+model Project {
+  id             String          @id @default(uuid())
+  designerId     String
+  designer       DesignerProfile @relation(fields: [designerId], references: [id], onDelete: Cascade)
+  title          String
+  category       String          // "Residential", "Commercial", "Hospitality", "Landscape", "Penthouse"
+  style          String          // "Modern Minimalist", "Scandinavian", "Biophilic Contemporary", "Neo-Classical", "Industrial"
+  description    String
+  location       String
+  completionYear String
+  areaSqFt       String?
+  budgetRange    String?
+  thumbnail      String
+  images         String          // JSON array string of image URLs
+  isFeatured     Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model Inquiry {
+  id               String           @id @default(uuid())
+  clientId         String
+  client           User             @relation("ClientInquiries", fields: [clientId], references: [id], onDelete: Cascade)
+  designerId       String
+  designer         DesignerProfile  @relation("DesignerInquiries", fields: [designerId], references: [id], onDelete: Cascade)
+  projectTitle     String
+  projectCategory  String           // e.g. "Residential Architecture", "Living Room Interior", "Commercial Showroom"
+  location         String
+  budgetRange      String           // e.g. "$25,000 - $50,000"
+  targetTimeline   String           // e.g. "3-6 Months"
+  scopeDescription String
+  status           String           @default("PENDING") // "PENDING", "UNDER_REVIEW", "ACCEPTED", "DECLINED", "COMPLETED"
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  messages         InquiryMessage[]
+}
+
+model InquiryMessage {
+  id          String   @id @default(uuid())
+  inquiryId   String
+  inquiry     Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  senderId    String
+  sender      User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  messageText String
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id              String          @id @default(uuid())
+  designerId      String
+  designer        DesignerProfile @relation("DesignerReviews", fields: [designerId], references: [id], onDelete: Cascade)
+  clientId        String
+  client          User            @relation("ClientReviews", fields: [clientId], references: [id], onDelete: Cascade)
+  rating          Int             // 1 to 5
+  reviewTitle     String
+  comment         String
+  projectCategory String?
+  createdAt       DateTime        @default(now())
+}
