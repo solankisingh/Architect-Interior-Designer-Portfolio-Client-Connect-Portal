@@ -8,13 +8,11 @@ import {
   Send,
   Calendar,
   MapPin,
-  DollarSign,
   Clock,
   ShieldCheck,
   User,
   Building,
-  CheckCircle2,
-  AlertCircle
+  Printer
 } from 'lucide-react';
 
 export default function InquiryDetail() {
@@ -66,7 +64,6 @@ export default function InquiryDetail() {
       }));
       setNewMessage('');
     } catch (err) {
-      console.error('Failed to send message:', err);
       alert('Could not send message. Please try again.');
     } finally {
       setSending(false);
@@ -82,7 +79,6 @@ export default function InquiryDetail() {
         status: res.data.inquiry.status
       }));
     } catch (err) {
-      console.error('Failed to update status:', err);
       alert('Failed to update status.');
     } finally {
       setStatusUpdating(false);
@@ -91,23 +87,22 @@ export default function InquiryDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen py-24 text-center">
-        <div className="w-10 h-10 border-4 border-atelier-300 border-t-atelier-700 rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-xs text-charcoal-500">Loading project communication thread...</p>
+      <div className="min-h-screen py-16 text-center text-xs text-gray-500">
+        Loading project discussion...
       </div>
     );
   }
 
   if (error || !inquiry) {
     return (
-      <div className="min-h-screen py-24 text-center max-w-md mx-auto px-4">
-        <h2 className="font-serif text-2xl font-bold text-charcoal-900 mb-2">Inquiry Not Accessible</h2>
-        <p className="text-xs text-charcoal-600 mb-6">{error || 'You do not have permission to view this inquiry.'}</p>
+      <div className="min-h-screen py-16 text-center max-w-md mx-auto px-4">
+        <h2 className="text-xl font-bold text-gray-900 mb-2">Inquiry Not Found</h2>
+        <p className="text-xs text-gray-500 mb-4">{error || 'You do not have permission to view this inquiry.'}</p>
         <button
           onClick={() => navigate(-1)}
-          className="px-6 py-2.5 rounded-full bg-charcoal-900 text-white text-xs font-semibold uppercase tracking-wider"
+          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold"
         >
-          Return to Previous
+          Return to Dashboard
         </button>
       </div>
     );
@@ -118,46 +113,53 @@ export default function InquiryDetail() {
   const canManageStatus = isDesigner || isAdmin;
 
   return (
-    <div className="min-h-screen bg-[#FBF9F5] py-10">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Link */}
-        <div className="mb-6">
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Top bar */}
+        <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-charcoal-600 hover:text-charcoal-950 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Dashboard</span>
           </button>
+
+          <button
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-1 text-xs text-gray-600 hover:text-gray-900 border border-gray-300 bg-white px-3 py-1 rounded"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            <span>Print Scope Brief</span>
+          </button>
         </div>
 
-        {/* Header Summary Card */}
-        <div className="bg-white rounded-3xl border border-atelier-200 p-6 sm:p-8 shadow-sm mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
+        {/* Project Card */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[11px] uppercase tracking-wider font-semibold text-atelier-700">
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-[11px] font-semibold text-amber-700 uppercase">
                   {inquiry.projectCategory}
                 </span>
-                <span className="text-charcoal-300">•</span>
+                <span className="text-gray-300">•</span>
                 <StatusBadge status={inquiry.status} />
               </div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-bold text-charcoal-950">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
                 {inquiry.projectTitle}
               </h1>
             </div>
 
-            {/* Status Change Selector (Designer / Admin) */}
             {canManageStatus && (
-              <div className="bg-atelier-50 p-3 rounded-2xl border border-atelier-200">
-                <label className="block text-[10px] uppercase tracking-wider font-bold text-charcoal-600 mb-1">
-                  Manage Commission Status:
+              <div className="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+                <label className="block text-[10px] uppercase font-bold text-gray-500 mb-1">
+                  Update Scope Status:
                 </label>
                 <select
                   value={inquiry.status}
                   disabled={statusUpdating}
                   onChange={(e) => handleStatusChange(e.target.value)}
-                  className="px-3 py-1.5 rounded-lg border border-atelier-300 bg-white text-xs font-semibold text-charcoal-900 outline-none"
+                  className="px-2.5 py-1 rounded border border-gray-300 bg-white text-xs font-semibold text-gray-800 outline-none"
                 >
                   <option value="PENDING">Pending Review</option>
                   <option value="UNDER_REVIEW">Under Review</option>
@@ -169,70 +171,67 @@ export default function InquiryDetail() {
             )}
           </div>
 
-          {/* Metadata Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-[#FBF9F5] border border-atelier-100 text-xs text-charcoal-700">
+          {/* Specs grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700">
             <div>
-              <span className="text-[10px] uppercase text-charcoal-400 font-semibold block">Client</span>
-              <p className="font-bold text-charcoal-900 mt-0.5">{inquiry.client?.name}</p>
-              <p className="text-[11px] text-charcoal-500">{inquiry.client?.email}</p>
+              <span className="text-[10px] text-gray-400 font-semibold uppercase block">Client</span>
+              <p className="font-bold text-gray-900 mt-0.5">{inquiry.client?.name}</p>
+              <p className="text-[11px] text-gray-500">{inquiry.client?.email}</p>
             </div>
             <div>
-              <span className="text-[10px] uppercase text-charcoal-400 font-semibold block">Studio</span>
-              <p className="font-bold text-charcoal-900 mt-0.5">{inquiry.designer?.studioName}</p>
-              <p className="text-[11px] text-charcoal-500">{inquiry.designer?.user?.name}</p>
+              <span className="text-[10px] text-gray-400 font-semibold uppercase block">Studio</span>
+              <p className="font-bold text-gray-900 mt-0.5">{inquiry.designer?.studioName}</p>
+              <p className="text-[11px] text-gray-500">{inquiry.designer?.user?.name}</p>
             </div>
             <div>
-              <span className="text-[10px] uppercase text-charcoal-400 font-semibold block">Est. Budget</span>
-              <p className="font-bold text-charcoal-900 mt-0.5">{inquiry.budgetRange}</p>
-              <p className="text-[11px] text-charcoal-500">{inquiry.targetTimeline}</p>
+              <span className="text-[10px] text-gray-400 font-semibold uppercase block">Budget & Timeline</span>
+              <p className="font-bold text-gray-900 mt-0.5">{inquiry.budgetRange}</p>
+              <p className="text-[11px] text-gray-500">{inquiry.targetTimeline}</p>
             </div>
             <div>
-              <span className="text-[10px] uppercase text-charcoal-400 font-semibold block">Location</span>
-              <p className="font-bold text-charcoal-900 mt-0.5">{inquiry.location}</p>
-              <p className="text-[11px] text-charcoal-500">
+              <span className="text-[10px] text-gray-400 font-semibold uppercase block">Site Location</span>
+              <p className="font-bold text-gray-900 mt-0.5">{inquiry.location}</p>
+              <p className="text-[11px] text-gray-500">
                 {new Date(inquiry.createdAt).toLocaleDateString()}
               </p>
             </div>
           </div>
 
-          {/* Scope Description */}
-          <div className="mt-6 pt-6 border-t border-atelier-100">
-            <h4 className="text-xs uppercase tracking-wider text-charcoal-400 font-semibold mb-2">
-              Scope of Work & Client Brief
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+              Client Requirement & Scope Brief
             </h4>
-            <p className="text-xs sm:text-sm text-charcoal-700 leading-relaxed bg-white p-4 rounded-xl border border-atelier-200">
+            <p className="text-xs text-gray-700 leading-relaxed bg-gray-50 p-3 rounded border border-gray-200">
               {inquiry.scopeDescription}
             </p>
           </div>
         </div>
 
-        {/* Conversation Thread */}
-        <div className="bg-white rounded-3xl border border-atelier-200 p-6 sm:p-8 shadow-sm">
-          <div className="border-b border-atelier-100 pb-4 mb-6 flex items-center justify-between">
-            <h3 className="font-serif text-lg font-bold text-charcoal-950">
-              Project Discussion History
+        {/* Message Thread */}
+        <div className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs">
+          <div className="border-b border-gray-100 pb-3 mb-5 flex items-center justify-between">
+            <h3 className="text-base font-bold text-gray-900">
+              Communication History
             </h3>
-            <span className="text-xs text-charcoal-400">
-              {inquiry.messages?.length || 0} messages recorded
+            <span className="text-xs text-gray-400">
+              {inquiry.messages?.length || 0} messages
             </span>
           </div>
 
-          {/* Message Feed */}
-          <div className="space-y-4 mb-8 max-h-[500px] overflow-y-auto pr-2">
+          <div className="space-y-3.5 mb-6 max-h-[450px] overflow-y-auto pr-1">
             {(inquiry.messages || []).map((msg) => {
               const isSender = msg.senderId === user?.id;
-              const isClientMsg = msg.sender?.role === 'CLIENT';
 
               return (
                 <div
                   key={msg.id}
                   className={`flex flex-col ${isSender ? 'items-end' : 'items-start'}`}
                 >
-                  <div className="flex items-center gap-2 mb-1 text-[11px] text-charcoal-500 px-1">
-                    <span className="font-semibold text-charcoal-800">
+                  <div className="flex items-center gap-1.5 mb-1 text-[11px] text-gray-400 px-1">
+                    <span className="font-semibold text-gray-800">
                       {msg.sender?.name || (isSender ? 'You' : 'Participant')}
                     </span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-atelier-100 text-atelier-800">
+                    <span className="text-[10px] px-1 py-0.2 rounded bg-gray-100 text-gray-600">
                       {msg.sender?.role}
                     </span>
                     <span>•</span>
@@ -240,10 +239,10 @@ export default function InquiryDetail() {
                   </div>
 
                   <div
-                    className={`max-w-lg p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
+                    className={`max-w-md p-3 rounded-lg text-xs leading-relaxed ${
                       isSender
-                        ? 'bg-charcoal-900 text-white rounded-tr-none'
-                        : 'bg-[#F5F0E8] text-charcoal-900 border border-atelier-200 rounded-tl-none'
+                        ? 'bg-slate-900 text-white'
+                        : 'bg-gray-100 text-gray-800 border border-gray-200'
                     }`}
                   >
                     {msg.messageText}
@@ -253,33 +252,26 @@ export default function InquiryDetail() {
             })}
           </div>
 
-          {/* Reply Input Box */}
-          <form onSubmit={handleSendMessage} className="pt-4 border-t border-atelier-100">
-            <div className="flex items-end gap-3">
+          {/* Reply Form */}
+          <form onSubmit={handleSendMessage} className="pt-3 border-t border-gray-100">
+            <div className="flex items-end gap-2">
               <div className="flex-1">
-                <label className="block text-[11px] font-semibold text-charcoal-600 mb-1">
-                  Send Response to {isDesigner ? inquiry.client?.name : inquiry.designer?.studioName}
-                </label>
                 <textarea
-                  rows="3"
+                  rows="2"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type your message, query or schedule proposal..."
-                  className="w-full px-4 py-3 rounded-2xl border border-atelier-300 focus:border-atelier-600 outline-none text-xs sm:text-sm bg-[#FBF9F5] resize-none"
+                  placeholder="Type a response regarding drawings, site visit, or budget..."
+                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
                   required
                 />
               </div>
               <button
                 type="submit"
                 disabled={sending || !newMessage.trim()}
-                className="px-6 py-3.5 rounded-2xl bg-charcoal-900 hover:bg-charcoal-800 disabled:opacity-50 text-atelier-100 text-xs font-semibold tracking-wider uppercase flex items-center gap-2 shadow-md transition-all shrink-0 h-[52px]"
+                className="px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-colors h-[42px]"
               >
-                {sending ? 'Sending...' : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    <span>Reply</span>
-                  </>
-                )}
+                <Send className="w-3.5 h-3.5" />
+                <span>Send</span>
               </button>
             </div>
           </form>

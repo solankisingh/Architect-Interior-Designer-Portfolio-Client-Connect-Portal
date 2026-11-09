@@ -48,3 +48,4 @@ router.post('/', authenticate, upload.single('image'), (req, res) => {
 });
 
 module.exports = router;
+

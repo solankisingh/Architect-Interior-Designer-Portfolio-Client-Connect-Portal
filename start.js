@@ -15,3 +15,4 @@ const serverProcess = spawn('node', ['src/index.js'], {
 serverProcess.on('exit', (code) => {
   process.exit(code);
 });
+

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { X, Send, Sparkles, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { X, Send, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
   const { user, isAuthenticated } = useAuth();
@@ -10,10 +10,10 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
 
   const [formData, setFormData] = useState({
     projectTitle: '',
-    projectCategory: 'Residential Architecture',
+    projectCategory: 'Residential Villa Construction',
     location: '',
-    budgetRange: '$25,000 - $50,000',
-    targetTimeline: '3-6 Months',
+    budgetRange: '₹50 Lakhs - ₹1 Crore',
+    targetTimeline: '6 - 9 Months',
     scopeDescription: '',
     initialMessage: ''
   });
@@ -55,193 +55,175 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
       setTimeout(() => {
         onClose();
         navigate(`/inquiries/${res.data.inquiry.id}`);
-      }, 1200);
+      }, 1000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to submit inquiry. Please try again.');
+      setError(err.response?.data?.message || 'Failed to submit inquiry.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-charcoal-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative bg-[#FBF9F5] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-atelier-200 animate-in fade-in zoom-in-95">
-        {/* Close Button */}
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="relative bg-white rounded-xl max-w-xl w-full p-6 sm:p-7 shadow-xl border border-gray-200">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-charcoal-400 hover:text-charcoal-800 p-2 rounded-full hover:bg-atelier-100 transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1 rounded-md hover:bg-gray-100"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Header */}
-        <div className="mb-6">
-          <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-1">
-            Project Commission & Inquiry
+        <div className="mb-5">
+          <span className="text-[11px] uppercase tracking-wider text-amber-700 font-bold block mb-1">
+            Project Commission Brief
           </span>
-          <h3 className="font-serif text-2xl font-bold text-charcoal-950">
-            Connect with {designer.studioName}
+          <h3 className="text-xl font-bold text-gray-900">
+            Send Inquiry to {designer.studioName}
           </h3>
-          <p className="text-xs text-charcoal-500 mt-1">
-            Led by {designer.user?.name} • {designer.location}
+          <p className="text-xs text-gray-500 mt-0.5">
+            Principal: {designer.user?.name} • Base: {designer.location}
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {success ? (
-          <div className="py-12 text-center space-y-3">
-            <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto animate-bounce" />
-            <h4 className="font-serif text-xl font-bold text-charcoal-900">Inquiry Sent to {designer.studioName}!</h4>
-            <p className="text-xs text-charcoal-600">Redirecting to your project communication thread...</p>
+          <div className="py-10 text-center space-y-2">
+            <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
+            <h4 className="text-base font-bold text-gray-900">Inquiry Sent Successfully</h4>
+            <p className="text-xs text-gray-500">Redirecting to project communication thread...</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                Project Title / Scope Name *
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Project Name / Scope Summary *
               </label>
               <input
                 type="text"
                 name="projectTitle"
                 value={formData.projectTitle}
                 onChange={handleChange}
-                placeholder="e.g. Modern Minimalist Seaside Villa, 4BHK Penthouse Renovation"
-                className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 focus:ring-1 focus:ring-atelier-600 outline-none text-sm bg-white"
+                placeholder="e.g. 4BHK Villa Construction on 2400 sq.ft plot, 3BHK Flat Renovation"
+                className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
                 required
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Project Category
                 </label>
                 <select
                   name="projectCategory"
                   value={formData.projectCategory}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
+                  className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
                 >
-                  <option value="Residential Architecture">Residential Architecture</option>
-                  <option value="Interior Design & Styling">Interior Design & Styling</option>
-                  <option value="Penthouse Renovation">Penthouse Renovation</option>
-                  <option value="Commercial & Office Space">Commercial & Office Space</option>
-                  <option value="Hospitality & Dining">Hospitality & Dining</option>
-                  <option value="Landscape & Courtyard">Landscape & Courtyard</option>
+                  <option value="Residential Villa Construction">Residential Villa Construction</option>
+                  <option value="Apartment Interior Design">Apartment Interior Design</option>
+                  <option value="Farmhouse & Vacation Home">Farmhouse & Vacation Home</option>
+                  <option value="Commercial Office Workspace">Commercial Office Workspace</option>
+                  <option value="Full House Renovation">Full House Renovation</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                  Site / Project Location *
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Site City / Location *
                 </label>
                 <input
                   type="text"
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  placeholder="e.g. North Goa, Mumbai, Bengaluru"
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
+                  placeholder="e.g. Whitefield Bangalore, Worli Mumbai"
+                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
                   required
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                  Estimated Budget Range
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Estimated Budget
                 </label>
                 <select
                   name="budgetRange"
                   value={formData.budgetRange}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
+                  className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
                 >
-                  <option value="Under $25,000">Under $25,000 (Consultation & Conceptual)</option>
-                  <option value="$25,000 - $75,000">$25,000 - $75,000 (Apartment / Interior)</option>
-                  <option value="$75,000 - $200,000">$75,000 - $200,000 (Luxury Renovation / Duplex)</option>
-                  <option value="$200,000 - $500,000">$200,000 - $500,000 (Full Villa Architecture)</option>
-                  <option value="$500,000+">$500,000+ (Estate / Landmark Scale)</option>
+                  <option value="Under ₹25 Lakhs">Under ₹25 Lakhs (Interiors / Consultation)</option>
+                  <option value="₹25 Lakhs - ₹50 Lakhs">₹25 Lakhs - ₹50 Lakhs (2BHK/3BHK Renovation)</option>
+                  <option value="₹50 Lakhs - ₹1 Crore">₹50 Lakhs - ₹1 Crore (Villa Construction)</option>
+                  <option value="₹1 Crore - ₹2.5 Crores">₹1 Crore - ₹2.5 Crores (Luxury Villa)</option>
+                  <option value="₹2.5 Crores+">₹2.5 Crores+ (Estate / Landmark)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Target Timeline
                 </label>
                 <select
                   name="targetTimeline"
                   value={formData.targetTimeline}
                   onChange={handleChange}
-                  className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
+                  className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
                 >
-                  <option value="Immediate (Within 1 month)">Immediate (Within 1 month)</option>
-                  <option value="1 - 3 Months">1 - 3 Months</option>
+                  <option value="Immediate (1-2 months)">Immediate (1-2 months)</option>
                   <option value="3 - 6 Months">3 - 6 Months</option>
                   <option value="6 - 12 Months">6 - 12 Months</option>
-                  <option value="Planning / Concept Stage">Planning / Concept Stage</option>
+                  <option value="Concept / Planning Stage">Concept / Planning Stage</option>
                 </select>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                Project Scope & Requirements *
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Detailed Scope of Work & Requirements *
               </label>
               <textarea
                 name="scopeDescription"
                 rows="3"
                 value={formData.scopeDescription}
                 onChange={handleChange}
-                placeholder="Describe your property, approximate area (sq ft), aesthetic preferences, and key priorities (e.g. natural daylight, courtyard, infinity pool)..."
-                className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white resize-none"
+                placeholder="Mention plot dimensions or apartment carpet area, number of bedrooms, floor requirements, and key priorities (courtyard, modular kitchen, balcony, site supervision)..."
+                className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
                 required
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                Personalized Note to Architect (Optional)
-              </label>
-              <input
-                type="text"
-                name="initialMessage"
-                value={formData.initialMessage}
-                onChange={handleChange}
-                placeholder="e.g. Hello, we loved your Solarium Cliff Villa and would like to schedule a site consultation."
-                className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
-              />
-            </div>
-
-            <div className="pt-2 flex items-center justify-between">
-              <span className="text-[11px] text-charcoal-500">
-                Direct inquiry tracked securely via AtelierConnect
+            <div className="pt-2 flex items-center justify-between border-t border-gray-100">
+              <span className="text-[11px] text-gray-500">
+                Direct inquiry tracked in your dashboard
               </span>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-xs font-medium text-charcoal-600 hover:text-charcoal-900"
+                  className="px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2.5 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-atelier-100 text-xs font-semibold tracking-wider uppercase flex items-center gap-2 shadow-md hover:shadow-lg transition-all"
+                  className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
                 >
                   {loading ? 'Sending...' : (
                     <>
                       <Send className="w-3.5 h-3.5" />
-                      Submit Inquiry
+                      <span>Submit Inquiry</span>
                     </>
                   )}
                 </button>

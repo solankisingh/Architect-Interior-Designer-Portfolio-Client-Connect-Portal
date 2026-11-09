@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import StatusBadge from '../components/StatusBadge';
@@ -17,15 +17,11 @@ import {
   Upload,
   ExternalLink,
   ShieldCheck,
-  Building,
-  DollarSign,
-  MapPin,
-  Calendar
+  Building
 } from 'lucide-react';
 
 export default function DesignerDashboard() {
   const { user, refreshUser } = useAuth();
-  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('portfolio'); // 'portfolio', 'inquiries', 'profile'
   const [profile, setProfile] = useState(null);
@@ -33,25 +29,26 @@ export default function DesignerDashboard() {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Project Modal state (Add / Edit)
+  // Project Modal
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [projectFormData, setProjectFormData] = useState({
     title: '',
-    category: 'Residential',
-    style: 'Modern Minimalist',
+    category: 'Residential Villa',
+    style: 'Contemporary',
     description: '',
     location: '',
     completionYear: new Date().getFullYear().toString(),
-    areaSqFt: '',
-    budgetRange: '',
-    thumbnail: '',
-    images: '',
+    areaSqFt: '3,200 sq.ft',
+    budgetRange: '₹75 Lakhs',
+    thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    images: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
     isFeatured: false
   });
   const [savingProject, setSavingProject] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
-  // Profile Form state
+  // Profile Form
   const [profileFormData, setProfileFormData] = useState({});
   const [savingProfile, setSavingProfile] = useState(false);
   const [profileMessage, setProfileMessage] = useState('');
@@ -59,7 +56,6 @@ export default function DesignerDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      // Fetch user profile and their projects
       const meRes = await api.get('/auth/me');
       const designerProfile = meRes.data.user.designerProfile;
 
@@ -73,7 +69,7 @@ export default function DesignerDashboard() {
           bio: fullDesignerRes.data.designer.bio || '',
           location: fullDesignerRes.data.designer.location || '',
           experienceYears: fullDesignerRes.data.designer.experienceYears || 5,
-          budgetTier: fullDesignerRes.data.designer.budgetTier || '$$',
+          budgetTier: fullDesignerRes.data.designer.budgetTier || '₹25L - ₹75L',
           specializations: fullDesignerRes.data.designer.specializations || '',
           designStyles: fullDesignerRes.data.designer.designStyles || '',
           accreditations: fullDesignerRes.data.designer.accreditations || '',
@@ -82,7 +78,6 @@ export default function DesignerDashboard() {
         });
       }
 
-      // Fetch received inquiries
       const inqRes = await api.get('/inquiries/my');
       setInquiries(inqRes.data.inquiries || []);
     } catch (err) {
@@ -100,13 +95,13 @@ export default function DesignerDashboard() {
     setEditingProject(null);
     setProjectFormData({
       title: '',
-      category: 'Residential',
-      style: 'Modern Minimalist',
+      category: 'Residential Villa',
+      style: 'Tropical Modern',
       description: '',
-      location: profile?.location || '',
+      location: profile?.location || 'Bangalore',
       completionYear: new Date().getFullYear().toString(),
-      areaSqFt: '3,500 sq ft',
-      budgetRange: '$150,000 - $250,000',
+      areaSqFt: '3,500 sq.ft',
+      budgetRange: '₹80 Lakhs',
       thumbnail: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
       images: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
       isFeatured: false
@@ -114,30 +109,55 @@ export default function DesignerDashboard() {
     setProjectModalOpen(true);
   };
 
-  const handleOpenEditProject = (proj) => {
-    setEditingProject(proj);
-    let imagesStr = proj.thumbnail;
+  const handleOpenEditProject = (p) => {
+    setEditingProject(p);
+    let imagesStr = p.thumbnail;
     try {
-      const arr = typeof proj.images === 'string' ? JSON.parse(proj.images) : proj.images;
+      const arr = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
       if (Array.isArray(arr)) imagesStr = arr.join('\n');
     } catch (e) {
-      imagesStr = proj.thumbnail;
+      imagesStr = p.thumbnail;
     }
 
     setProjectFormData({
-      title: proj.title,
-      category: proj.category,
-      style: proj.style,
-      description: proj.description,
-      location: proj.location,
-      completionYear: proj.completionYear,
-      areaSqFt: proj.areaSqFt || '',
-      budgetRange: proj.budgetRange || '',
-      thumbnail: proj.thumbnail,
+      title: p.title,
+      category: p.category,
+      style: p.style,
+      description: p.description,
+      location: p.location,
+      completionYear: p.completionYear,
+      areaSqFt: p.areaSqFt || '',
+      budgetRange: p.budgetRange || '',
+      thumbnail: p.thumbnail,
       images: imagesStr,
-      isFeatured: proj.isFeatured || false
+      isFeatured: p.isFeatured || false
     });
     setProjectModalOpen(true);
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingImage(true);
+      const fd = new FormData();
+      fd.append('image', file);
+
+      const res = await api.post('/upload', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      setProjectFormData((prev) => ({
+        ...prev,
+        thumbnail: res.data.url,
+        images: prev.images ? `${res.data.url}\n${prev.images}` : res.data.url
+      }));
+    } catch (err) {
+      alert('Failed to upload image file.');
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleSaveProject = async (e) => {
@@ -163,7 +183,6 @@ export default function DesignerDashboard() {
       setProjectModalOpen(false);
       await fetchDashboardData();
     } catch (err) {
-      console.error('Failed to save project:', err);
       alert(err.response?.data?.message || 'Failed to save project');
     } finally {
       setSavingProject(false);
@@ -171,12 +190,11 @@ export default function DesignerDashboard() {
   };
 
   const handleDeleteProject = async (projId) => {
-    if (!window.confirm('Are you sure you want to remove this project from your portfolio?')) return;
+    if (!window.confirm('Are you sure you want to delete this project?')) return;
     try {
       await api.delete(`/projects/${projId}`);
       await fetchDashboardData();
     } catch (err) {
-      console.error('Failed to delete project:', err);
       alert('Failed to delete project.');
     }
   };
@@ -186,7 +204,7 @@ export default function DesignerDashboard() {
       await api.patch(`/inquiries/${inqId}/status`, { status: newStatus });
       await fetchDashboardData();
     } catch (err) {
-      console.error('Failed to update status:', err);
+      console.error(err);
     }
   };
 
@@ -200,7 +218,6 @@ export default function DesignerDashboard() {
       await refreshUser();
       await fetchDashboardData();
     } catch (err) {
-      console.error('Failed to update profile:', err);
       setProfileMessage('Error updating profile.');
     } finally {
       setSavingProfile(false);
@@ -208,35 +225,35 @@ export default function DesignerDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FBF9F5] py-10">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Studio Top Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-atelier-200">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-gray-200">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold">
-                Architectural Studio Workspace
+              <span className="text-xs uppercase font-bold text-amber-700 tracking-wider">
+                Architect Studio Workspace
               </span>
               {profile?.isVerified && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-semibold border border-emerald-200">
-                  COA / IIID Verified
+                <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 text-[10px] font-semibold border border-emerald-200">
+                  COA Verified
                 </span>
               )}
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-950">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
               {profile?.studioName || 'Your Studio'}
             </h1>
-            <p className="text-xs text-charcoal-500 mt-1">
-              Curate portfolio case studies, review incoming client commissions, and adjust studio credentials.
+            <p className="text-xs text-gray-500 mt-0.5">
+              Manage your portfolio drawings, case studies, and client inquiries.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {profile && (
               <Link
                 to={`/designers/${profile.id}`}
                 target="_blank"
-                className="px-4 py-2.5 rounded-xl border border-atelier-300 hover:bg-atelier-100 text-charcoal-800 text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
               >
                 <Eye className="w-3.5 h-3.5" />
                 <span>View Public Profile</span>
@@ -244,7 +261,7 @@ export default function DesignerDashboard() {
             )}
             <button
               onClick={handleOpenAddProject}
-              className="px-5 py-2.5 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-atelier-100 text-xs font-semibold uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
+              className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Add New Project</span>
@@ -252,89 +269,89 @@ export default function DesignerDashboard() {
           </div>
         </div>
 
-        {/* Metrics Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
-          <div className="p-5 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-charcoal-400 font-semibold">Portfolios</span>
-            <p className="font-serif text-3xl font-bold text-charcoal-950 mt-1">{projects.length}</p>
-            <p className="text-[11px] text-charcoal-500 mt-1">Published case studies</p>
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs font-semibold text-gray-400 uppercase">Portfolios</span>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{projects.length}</p>
+            <p className="text-[11px] text-gray-500 mt-0.5">Published case studies</p>
           </div>
 
-          <div className="p-5 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-atelier-700 font-semibold">Client Inquiries</span>
-            <p className="font-serif text-3xl font-bold text-charcoal-950 mt-1">{inquiries.length}</p>
-            <p className="text-[11px] text-emerald-600 mt-1 font-medium">
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs font-semibold text-amber-700 uppercase">Client Inquiries</span>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{inquiries.length}</p>
+            <p className="text-[11px] text-emerald-600 mt-0.5 font-medium">
               {inquiries.filter((i) => i.status === 'PENDING').length} pending review
             </p>
           </div>
 
-          <div className="p-5 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-charcoal-400 font-semibold">Average Rating</span>
-            <div className="flex items-center gap-1.5 mt-1">
-              <Star className="w-5 h-5 fill-amber-400 text-amber-500" />
-              <p className="font-serif text-3xl font-bold text-charcoal-950">{profile?.averageRating || 5.0}</p>
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs font-semibold text-gray-400 uppercase">Average Rating</span>
+            <div className="flex items-center gap-1 mt-1">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
+              <p className="text-2xl font-bold text-gray-900">{profile?.averageRating || 5.0}</p>
             </div>
-            <p className="text-[11px] text-charcoal-500 mt-1">{profile?.reviewCount || 0} client reviews</p>
+            <p className="text-[11px] text-gray-500 mt-0.5">{profile?.reviewCount || 0} client reviews</p>
           </div>
 
-          <div className="p-5 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-charcoal-400 font-semibold">Experience</span>
-            <p className="font-serif text-3xl font-bold text-charcoal-950 mt-1">{profile?.experienceYears || 5}y</p>
-            <p className="text-[11px] text-charcoal-500 mt-1">{profile?.budgetTier} tier pricing</p>
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs font-semibold text-gray-400 uppercase">Experience</span>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{profile?.experienceYears || 5} Years</p>
+            <p className="text-[11px] text-gray-500 mt-0.5">{profile?.budgetTier}</p>
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex border-b border-atelier-200 mb-8 space-x-8">
+        {/* Tabs */}
+        <div className="flex border-b border-gray-200 mb-6 space-x-6 text-xs sm:text-sm font-semibold">
           <button
             onClick={() => setActiveTab('portfolio')}
-            className={`pb-3 text-xs sm:text-sm font-semibold uppercase tracking-wider border-b-2 transition-all ${
+            className={`pb-2.5 border-b-2 transition-colors ${
               activeTab === 'portfolio'
-                ? 'border-charcoal-950 text-charcoal-950'
-                : 'border-transparent text-charcoal-500 hover:text-charcoal-800'
+                ? 'border-slate-900 text-slate-900'
+                : 'border-transparent text-gray-500 hover:text-gray-800'
             }`}
           >
             Portfolio Projects ({projects.length})
           </button>
           <button
             onClick={() => setActiveTab('inquiries')}
-            className={`pb-3 text-xs sm:text-sm font-semibold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 ${
+            className={`pb-2.5 border-b-2 transition-colors flex items-center gap-1.5 ${
               activeTab === 'inquiries'
-                ? 'border-charcoal-950 text-charcoal-950'
-                : 'border-transparent text-charcoal-500 hover:text-charcoal-800'
+                ? 'border-slate-900 text-slate-900'
+                : 'border-transparent text-gray-500 hover:text-gray-800'
             }`}
           >
-            <span>Client Leads & Inquiries</span>
+            <span>Client Inquiries</span>
             {inquiries.filter((i) => i.status === 'PENDING').length > 0 && (
-              <span className="w-5 h-5 rounded-full bg-atelier-600 text-white text-[10px] flex items-center justify-center font-bold">
+              <span className="px-1.5 py-0.2 rounded-full bg-amber-600 text-white text-[10px]">
                 {inquiries.filter((i) => i.status === 'PENDING').length}
               </span>
             )}
           </button>
           <button
             onClick={() => setActiveTab('profile')}
-            className={`pb-3 text-xs sm:text-sm font-semibold uppercase tracking-wider border-b-2 transition-all ${
+            className={`pb-2.5 border-b-2 transition-colors ${
               activeTab === 'profile'
-                ? 'border-charcoal-950 text-charcoal-950'
-                : 'border-transparent text-charcoal-500 hover:text-charcoal-800'
+                ? 'border-slate-900 text-slate-900'
+                : 'border-transparent text-gray-500 hover:text-gray-800'
             }`}
           >
-            Studio Profile & Settings
+            Studio Details & Accreditations
           </button>
         </div>
 
-        {/* TAB 1: PORTFOLIO MANAGEMENT */}
+        {/* TAB 1: PORTFOLIO */}
         {activeTab === 'portfolio' && (
           <div>
             {projects.length === 0 ? (
-              <div className="py-20 text-center bg-white rounded-3xl border border-atelier-200 p-8">
-                <p className="font-serif text-xl font-bold text-charcoal-900 mb-2">No Projects Uploaded Yet</p>
-                <p className="text-xs text-charcoal-500 max-w-md mx-auto mb-6">
-                  Showcase your completed residential villas, commercial hubs, or interior renovations with rich photography.
+              <div className="py-12 text-center bg-white rounded-xl border border-gray-200 p-6">
+                <h3 className="text-sm font-bold text-gray-800 mb-1">No Projects in Portfolio</h3>
+                <p className="text-xs text-gray-500 mb-4">
+                  Add photos of your completed projects to show prospective clients.
                 </p>
                 <button
                   onClick={handleOpenAddProject}
-                  className="px-6 py-2.5 rounded-full bg-charcoal-900 text-white text-xs font-semibold uppercase tracking-wider"
+                  className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold"
                 >
                   Upload First Project
                 </button>
@@ -344,53 +361,48 @@ export default function DesignerDashboard() {
                 {projects.map((proj) => (
                   <div
                     key={proj.id}
-                    className="bg-white rounded-3xl overflow-hidden border border-atelier-200 shadow-sm flex flex-col justify-between"
+                    className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs flex flex-col justify-between"
                   >
                     <div>
-                      <div className="relative h-48 bg-charcoal-900 overflow-hidden">
+                      <div className="h-44 bg-gray-100 relative overflow-hidden">
                         <img
                           src={proj.thumbnail}
                           alt={proj.title}
                           className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 text-charcoal-900 text-[10px] font-semibold">
+                        <div className="absolute top-2 right-2 px-2 py-0.5 rounded bg-white/90 text-[10px] font-semibold text-gray-800">
                           {proj.style}
                         </div>
-                        {proj.isFeatured && (
-                          <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-atelier-600 text-white text-[9px] font-bold uppercase tracking-wider">
-                            Featured
-                          </div>
-                        )}
                       </div>
 
-                      <div className="p-5">
-                        <span className="text-[10px] uppercase font-bold text-atelier-700 tracking-wider">
+                      <div className="p-4">
+                        <div className="text-[10px] font-bold text-amber-700 uppercase">
                           {proj.category} • {proj.completionYear}
-                        </span>
-                        <h3 className="font-serif text-lg font-bold text-charcoal-950 mt-1 mb-2">
+                        </div>
+                        <h3 className="text-base font-bold text-gray-900 mt-0.5 mb-1">
                           {proj.title}
                         </h3>
-                        <p className="text-xs text-charcoal-600 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
                           {proj.description}
                         </p>
-                        <div className="mt-3 pt-3 border-t border-atelier-100 flex items-center justify-between text-[11px] text-charcoal-500">
+                        <div className="mt-3 pt-2 border-t border-gray-100 flex justify-between text-[11px] text-gray-500">
                           <span>{proj.location}</span>
-                          <span>{proj.areaSqFt}</span>
+                          <span className="font-semibold text-gray-700">{proj.areaSqFt}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="p-4 bg-atelier-50/60 border-t border-atelier-200 flex items-center justify-between gap-2">
+                    <div className="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between gap-2">
                       <button
                         onClick={() => handleOpenEditProject(proj)}
-                        className="flex-1 py-2 px-3 rounded-xl bg-white border border-atelier-300 hover:border-atelier-600 text-xs font-semibold text-charcoal-800 flex items-center justify-center gap-1.5 transition-colors"
+                        className="flex-1 py-1.5 px-3 rounded-lg bg-white border border-gray-300 hover:bg-gray-100 text-xs font-semibold text-gray-700 flex items-center justify-center gap-1 transition-colors"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                         <span>Edit</span>
                       </button>
                       <button
                         onClick={() => handleDeleteProject(proj.id)}
-                        className="py-2 px-3 rounded-xl bg-white border border-rose-200 hover:bg-rose-50 text-xs font-semibold text-rose-600 flex items-center justify-center gap-1.5 transition-colors"
+                        className="py-1.5 px-3 rounded-lg bg-white border border-red-200 hover:bg-red-50 text-xs font-semibold text-red-600 flex items-center justify-center gap-1 transition-colors"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -402,68 +414,67 @@ export default function DesignerDashboard() {
           </div>
         )}
 
-        {/* TAB 2: INQUIRIES & LEADS */}
+        {/* TAB 2: INQUIRIES */}
         {activeTab === 'inquiries' && (
-          <div className="bg-white rounded-3xl border border-atelier-200 p-6 sm:p-8 shadow-sm">
-            <h2 className="font-serif text-xl sm:text-2xl font-bold text-charcoal-950 mb-1">
+          <div className="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs">
+            <h2 className="text-lg font-bold text-gray-900 mb-1">
               Client Commission Inquiries
             </h2>
-            <p className="text-xs text-charcoal-500 mb-6">
-              Review project specifications, accept or decline scopes, and message clients directly.
+            <p className="text-xs text-gray-500 mb-6">
+              Review project specifications, update scope status, and communicate directly with clients.
             </p>
 
             {inquiries.length === 0 ? (
-              <div className="py-16 text-center text-xs text-charcoal-500">
-                No inquiries received yet. Ensure your portfolio is complete to attract prospective clients!
+              <div className="py-12 text-center text-xs text-gray-500">
+                No inquiries received yet.
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3.5">
                 {inquiries.map((inq) => (
                   <div
                     key={inq.id}
-                    className="p-5 rounded-2xl bg-[#FBF9F5] border border-atelier-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                    className="p-4 rounded-lg border border-gray-200 bg-gray-50/50 flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
                   >
                     <div className="space-y-1.5 flex-1">
                       <div className="flex items-center gap-2">
                         <StatusBadge status={inq.status} />
-                        <span className="text-[11px] text-charcoal-500 font-medium">
-                          From: <strong className="text-charcoal-900">{inq.client?.name}</strong> ({inq.client?.email})
+                        <span className="text-[11px] text-gray-500 font-medium">
+                          Client: <strong className="text-gray-900">{inq.client?.name}</strong> ({inq.client?.email})
                         </span>
                       </div>
 
-                      <h4 className="font-serif text-lg font-bold text-charcoal-950">
+                      <h3 className="text-base font-bold text-gray-900">
                         {inq.projectTitle}
-                      </h4>
+                      </h3>
 
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-charcoal-600">
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600">
                         <span>Category: {inq.projectCategory}</span>
                         <span>•</span>
-                        <span>Budget: <strong className="text-charcoal-900">{inq.budgetRange}</strong></span>
+                        <span>Budget: <strong className="text-gray-900">{inq.budgetRange}</strong></span>
                         <span>•</span>
                         <span>Timeline: {inq.targetTimeline}</span>
                         <span>•</span>
-                        <span>Location: {inq.location}</span>
+                        <span>Site: {inq.location}</span>
                       </div>
 
-                      <p className="text-xs text-charcoal-600 line-clamp-2 bg-white/60 p-2 rounded-lg border border-atelier-100 mt-2">
+                      <p className="text-xs text-gray-700 bg-white p-2.5 rounded border border-gray-200 mt-2">
                         {inq.scopeDescription}
                       </p>
                     </div>
 
-                    <div className="flex flex-wrap sm:flex-col items-stretch gap-2 shrink-0 w-full md:w-auto">
+                    <div className="flex sm:flex-col items-stretch gap-2 shrink-0 w-full md:w-auto">
                       <Link
                         to={`/inquiries/${inq.id}`}
-                        className="py-2 px-4 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm text-center"
+                        className="py-2 px-4 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors text-center"
                       >
                         <MessageSquare className="w-3.5 h-3.5" />
-                        <span>Reply / Thread</span>
+                        <span>Reply to Client</span>
                       </Link>
 
-                      {/* Quick Status Select */}
                       <select
                         value={inq.status}
                         onChange={(e) => handleUpdateStatus(inq.id, e.target.value)}
-                        className="py-1.5 px-3 rounded-xl border border-atelier-300 text-xs font-semibold text-charcoal-900 bg-white outline-none cursor-pointer"
+                        className="py-1.5 px-2.5 rounded-lg border border-gray-300 text-xs font-semibold text-gray-800 bg-white cursor-pointer"
                       >
                         <option value="PENDING">Pending</option>
                         <option value="UNDER_REVIEW">Under Review</option>
@@ -479,138 +490,109 @@ export default function DesignerDashboard() {
           </div>
         )}
 
-        {/* TAB 3: STUDIO PROFILE & SETTINGS */}
+        {/* TAB 3: PROFILE SETTINGS */}
         {activeTab === 'profile' && (
-          <div className="bg-white rounded-3xl border border-atelier-200 p-6 sm:p-10 shadow-sm max-w-4xl">
-            <h2 className="font-serif text-xl sm:text-2xl font-bold text-charcoal-950 mb-1">
-              Studio Practice & Accreditations
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-xs max-w-3xl">
+            <h2 className="text-lg font-bold text-gray-900 mb-1">
+              Studio Information & Accreditations
             </h2>
-            <p className="text-xs text-charcoal-500 mb-6">
-              Update your public studio branding, design philosophy, and Council of Architecture details.
+            <p className="text-xs text-gray-500 mb-5">
+              Update your firm's description, base location, and Council of Architecture (COA) registration.
             </p>
 
             {profileMessage && (
-              <div className="mb-6 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+              <div className="mb-4 p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 shrink-0" />
                 <span>{profileMessage}</span>
               </div>
             )}
 
-            <form onSubmit={handleSaveProfile} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <form onSubmit={handleSaveProfile} className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Studio Practice Name *</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Studio Practice Name *</label>
                   <input
                     type="text"
                     value={profileFormData.studioName || ''}
                     onChange={(e) => setProfileFormData({ ...profileFormData, studioName: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Tagline / Motto</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Tagline</label>
                   <input
                     type="text"
                     value={profileFormData.tagline || ''}
                     onChange={(e) => setProfileFormData({ ...profileFormData, tagline: e.target.value })}
-                    placeholder="e.g. Sculptural Modernism & Harmonious Living"
-                    className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Studio Philosophy & Biography *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">About the Practice & Philosophy *</label>
                 <textarea
-                  rows="4"
+                  rows="3"
                   value={profileFormData.bio || ''}
                   onChange={(e) => setProfileFormData({ ...profileFormData, bio: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5] resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none resize-none"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Operating Location *</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">City / Location *</label>
                   <input
                     type="text"
                     value={profileFormData.location || ''}
                     onChange={(e) => setProfileFormData({ ...profileFormData, location: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Years of Experience</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Experience (Years)</label>
                   <input
                     type="number"
                     value={profileFormData.experienceYears || ''}
                     onChange={(e) => setProfileFormData({ ...profileFormData, experienceYears: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Budget Tier</label>
-                  <select
-                    value={profileFormData.budgetTier || '$$'}
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Budget Tier</label>
+                  <input
+                    type="text"
+                    value={profileFormData.budgetTier || '₹25L - ₹75L'}
                     onChange={(e) => setProfileFormData({ ...profileFormData, budgetTier: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
-                  >
-                    <option value="$">$ (Economy / Modular)</option>
-                    <option value="$$">$$ (Standard / Residential)</option>
-                    <option value="$$$">$$$ (Premium / Bespoke)</option>
-                    <option value="$$$$">$$$$ (Ultra-Luxury / Landmark)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Specializations</label>
-                  <input
-                    type="text"
-                    value={profileFormData.specializations || ''}
-                    onChange={(e) => setProfileFormData({ ...profileFormData, specializations: e.target.value })}
-                    placeholder="e.g. Residential, Penthouse Interiors, Landscape"
-                    className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Design Styles</label>
-                  <input
-                    type="text"
-                    value={profileFormData.designStyles || ''}
-                    onChange={(e) => setProfileFormData({ ...profileFormData, designStyles: e.target.value })}
-                    placeholder="e.g. Modern Minimalist, Scandinavian, Biophilic"
-                    className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
+                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Accreditations & Reg Numbers</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Accreditations / COA Registration Number</label>
                 <input
                   type="text"
                   value={profileFormData.accreditations || ''}
                   onChange={(e) => setProfileFormData({ ...profileFormData, accreditations: e.target.value })}
-                  placeholder="e.g. Council of Architecture (CA/2012/51930), Fellow IIID"
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-[#FBF9F5]"
+                  placeholder="e.g. Council of Architecture (CA/2012/55320), IIID Life Member"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
                 />
               </div>
 
-              <div className="pt-4">
+              <div className="pt-2">
                 <button
                   type="submit"
                   disabled={savingProfile}
-                  className="px-8 py-3 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold uppercase tracking-wider shadow-md transition-all"
+                  className="px-6 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors"
                 >
-                  {savingProfile ? 'Saving...' : 'Save Studio Profile'}
+                  {savingProfile ? 'Saving...' : 'Save Profile Changes'}
                 </button>
               </div>
             </form>
@@ -620,162 +602,155 @@ export default function DesignerDashboard() {
 
       {/* PROJECT ADD / EDIT MODAL */}
       {projectModalOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-charcoal-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="relative bg-[#FBF9F5] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-atelier-200 animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="relative bg-white rounded-xl max-w-xl w-full p-6 shadow-xl border border-gray-200 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setProjectModalOpen(false)}
-              className="absolute top-5 right-5 text-charcoal-400 hover:text-charcoal-800 p-2 rounded-full hover:bg-atelier-100"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1 rounded-md"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="font-serif text-2xl font-bold text-charcoal-950 mb-1">
-              {editingProject ? 'Edit Portfolio Project' : 'Add New Portfolio Project'}
+            <h3 className="text-lg font-bold text-gray-900 mb-1">
+              {editingProject ? 'Edit Project' : 'Add New Portfolio Project'}
             </h3>
-            <p className="text-xs text-charcoal-500 mb-6">
-              Present your architectural concept, materials, and high-resolution imagery.
+            <p className="text-xs text-gray-500 mb-4">
+              Upload photos and project drawings to showcase to prospective clients.
             </p>
 
-            <form onSubmit={handleSaveProject} className="space-y-4">
+            <form onSubmit={handleSaveProject} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Project Title *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Project Title *</label>
                 <input
                   type="text"
                   value={projectFormData.title}
                   onChange={(e) => setProjectFormData({ ...projectFormData, title: e.target.value })}
-                  placeholder="e.g. The Solarium Cliff Villa"
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-white"
+                  placeholder="e.g. 4BHK Courtyard Residence at Whitefield"
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Category</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Category</label>
                   <select
                     value={projectFormData.category}
                     onChange={(e) => setProjectFormData({ ...projectFormData, category: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-white"
+                    className="w-full px-2.5 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none bg-white"
                   >
-                    <option value="Residential">Residential</option>
-                    <option value="Commercial">Commercial</option>
-                    <option value="Hospitality">Hospitality</option>
-                    <option value="Penthouse">Penthouse</option>
-                    <option value="Landscape">Landscape</option>
+                    <option value="Residential Villa">Residential Villa</option>
+                    <option value="Apartment Interior">Apartment Interior</option>
+                    <option value="Commercial Office">Commercial Office</option>
+                    <option value="Holiday Home">Holiday Home</option>
+                    <option value="Bungalow Construction">Bungalow Construction</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Design Style</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Design Style</label>
                   <select
                     value={projectFormData.style}
                     onChange={(e) => setProjectFormData({ ...projectFormData, style: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-white"
+                    className="w-full px-2.5 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none bg-white"
                   >
+                    <option value="Tropical Modern">Tropical Modern</option>
                     <option value="Modern Minimalist">Modern Minimalist</option>
-                    <option value="Biophilic Contemporary">Biophilic Contemporary</option>
-                    <option value="Scandinavian">Scandinavian</option>
-                    <option value="Industrial Loft">Industrial Loft</option>
-                    <option value="Neo-Classical">Neo-Classical</option>
-                    <option value="Mediterranean Warmth">Mediterranean Warmth</option>
+                    <option value="Contemporary">Contemporary</option>
+                    <option value="Traditional Indian">Traditional Indian</option>
+                    <option value="Industrial">Industrial</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Project Description & Concept *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Description & Materiality *</label>
                 <textarea
                   rows="3"
                   value={projectFormData.description}
                   onChange={(e) => setProjectFormData({ ...projectFormData, description: e.target.value })}
-                  placeholder="Detail the spatial organization, daylight studies, materiality (travertine, cedar, concrete)..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-white resize-none"
+                  placeholder="Detail the floor plan organization, daylighting, materials used (Kota stone, Teak wood, Exposed brickwork)..."
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none resize-none"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Location</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">City / Site</label>
                   <input
                     type="text"
                     value={projectFormData.location}
                     onChange={(e) => setProjectFormData({ ...projectFormData, location: e.target.value })}
-                    placeholder="e.g. North Goa"
-                    className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 text-xs bg-white"
+                    placeholder="e.g. Bangalore"
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Year</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Year</label>
                   <input
                     type="text"
                     value={projectFormData.completionYear}
                     onChange={(e) => setProjectFormData({ ...projectFormData, completionYear: e.target.value })}
-                    className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 text-xs bg-white"
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-charcoal-700 mb-1">Area (sq ft)</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Built-up Area</label>
                   <input
                     type="text"
                     value={projectFormData.areaSqFt}
                     onChange={(e) => setProjectFormData({ ...projectFormData, areaSqFt: e.target.value })}
-                    placeholder="e.g. 5,200 sq ft"
-                    className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 text-xs bg-white"
+                    placeholder="e.g. 3,500 sq.ft"
+                    className="w-full px-2.5 py-1.5 rounded-lg border border-gray-300 text-xs"
                   />
                 </div>
               </div>
 
+              {/* Image Upload or URL */}
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">Cover Thumbnail Image URL *</label>
-                <input
-                  type="text"
-                  value={projectFormData.thumbnail}
-                  onChange={(e) => setProjectFormData({ ...projectFormData, thumbnail: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs sm:text-sm bg-white"
-                  required
-                />
+                <label className="block text-xs font-medium text-gray-700 mb-1">Cover Photo URL *</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={projectFormData.thumbnail}
+                    onChange={(e) => setProjectFormData({ ...projectFormData, thumbnail: e.target.value })}
+                    placeholder="https://images.unsplash.com/..."
+                    className="flex-1 px-3 py-1.5 rounded-lg border border-gray-300 text-xs"
+                    required
+                  />
+                  <label className="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 text-xs font-medium text-gray-700 cursor-pointer flex items-center gap-1 shrink-0">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>{uploadingImage ? 'Uploading...' : 'Upload'}</span>
+                    <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                  </label>
+                </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                  Gallery Images (One URL per line for Lightbox showcase)
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Gallery Images (One URL per line)
                 </label>
                 <textarea
-                  rows="3"
+                  rows="2"
                   value={projectFormData.images}
                   onChange={(e) => setProjectFormData({ ...projectFormData, images: e.target.value })}
-                  placeholder="https://images.unsplash.com/photo-1...&#10;https://images.unsplash.com/photo-2..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 text-xs bg-white resize-none font-mono text-[11px]"
+                  className="w-full px-3 py-1.5 rounded-lg border border-gray-300 text-xs font-mono text-[11px] resize-none"
                 />
               </div>
 
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="isFeatured"
-                  checked={projectFormData.isFeatured}
-                  onChange={(e) => setProjectFormData({ ...projectFormData, isFeatured: e.target.checked })}
-                  className="rounded border-atelier-300 text-atelier-600 focus:ring-atelier-500"
-                />
-                <label htmlFor="isFeatured" className="text-xs text-charcoal-700 font-medium">
-                  Feature this project on studio highlight carousel
-                </label>
-              </div>
-
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-atelier-100">
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => setProjectModalOpen(false)}
-                  className="px-4 py-2 text-xs font-medium text-charcoal-600"
+                  className="px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={savingProject}
-                  className="px-6 py-2.5 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold uppercase tracking-wider shadow-md transition-all"
+                  className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors"
                 >
                   {savingProject ? 'Saving...' : (editingProject ? 'Update Project' : 'Publish Project')}
                 </button>

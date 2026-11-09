@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import DemoSwitcherPill from './components/DemoSwitcherPill';
 
 // Pages
 import Home from './pages/Home';
@@ -45,9 +44,9 @@ export default function App() {
             </Routes>
           </main>
           <Footer />
-          <DemoSwitcherPill />
         </div>
       </BrowserRouter>
     </AuthProvider>
   );
 }
+

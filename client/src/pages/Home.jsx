@@ -7,20 +7,18 @@ import {
   ShieldCheck,
   Star,
   MapPin,
-  Sparkles,
-  Award,
-  Layers,
-  ChevronRight,
-  Building2,
-  Compass,
+  Building,
+  Briefcase,
   CheckCircle,
-  Briefcase
+  Award,
+  ChevronRight
 } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
   const [featuredDesigners, setFeaturedDesigners] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,181 +37,166 @@ export default function Home() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/designers?search=${encodeURIComponent(searchTerm.trim())}`);
+    const queryParts = [];
+    if (searchTerm.trim()) queryParts.push(`search=${encodeURIComponent(searchTerm.trim())}`);
+    if (selectedCity) queryParts.push(`location=${encodeURIComponent(selectedCity)}`);
+
+    if (queryParts.length > 0) {
+      navigate(`/designers?${queryParts.join('&')}`);
     } else {
       navigate('/designers');
     }
   };
 
-  const categories = [
+  const projectCategories = [
     {
       title: 'Residential Architecture',
-      desc: 'Bespoke coastal villas, hill retreats & sustainable modern residences',
+      desc: 'Independent villas, bungalow construction, and courtyard floor plans',
       image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80',
-      query: 'Residential'
+      category: 'Residential'
     },
     {
-      title: 'Modern Minimalist',
-      desc: 'Clean lines, travertine finishes & reductionist spatial tranquility',
+      title: 'Apartment & Penthouse Interiors',
+      desc: 'Turn-key 2BHK/3BHK interior renovation, modular kitchens & bespoke woodwork',
       image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80',
-      query: 'Modern Minimalist'
+      category: 'Apartment'
     },
     {
-      title: 'Biophilic Contemporary',
-      desc: 'Passive climate cooling, indoor courtyards & microclimate gardens',
-      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80',
-      query: 'Biophilic Contemporary'
-    },
-    {
-      title: 'Industrial & Creative Studios',
-      desc: 'Steel crittall glazing, exposed concrete & adaptive workspace reuse',
+      title: 'Commercial & Retail Workspaces',
+      desc: 'Office interiors, collaborative coworking hubs, and retail outlets',
       image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80',
-      query: 'Industrial Loft'
+      category: 'Commercial'
+    },
+    {
+      title: 'Holiday Homes & Vernacular Villas',
+      desc: 'Heritage restoration, Goan villas, hill cottages, and farmhouses',
+      image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80',
+      category: 'Holiday'
     }
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative min-h-[88vh] flex items-center justify-center bg-charcoal-950 text-white overflow-hidden">
-        {/* Architectural Background */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85"
-            alt="Architectural Masterpiece"
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950 via-charcoal-950/70 to-charcoal-950/40" />
-        </div>
-
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          {/* Institutional Ribbon */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-charcoal-800/80 border border-charcoal-700 text-atelier-300 text-xs font-medium mb-8 backdrop-blur-md animate-in fade-in">
-            <Award className="w-3.5 h-3.5 text-atelier-400" />
-            <span>Connecting Discerning Clients with COA & IIID Accredited Studios</span>
+      <section className="border-b border-gray-200 bg-slate-900 text-white relative py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-amber-400 text-xs font-medium mb-6">
+            <Award className="w-3.5 h-3.5" />
+            <span>Aligned with Council of Architecture (COA) & IIID Professional Guidelines</span>
           </div>
 
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.15]">
-            Where Visionary Architecture <br />
-            <span className="italic font-normal text-atelier-300">Meets Exceptional Living</span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight font-sans">
+            Connect with Registered Architects & <br className="hidden sm:inline" />
+            Interior Designers for Your Project
           </h1>
 
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-charcoal-300 mb-10 leading-relaxed font-sans font-light">
-            Discover premier architects and interior designers. Explore curated portfolios, review detailed case studies, and initiate direct project commissions.
+          <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto mb-8 font-normal">
+            Explore authentic portfolio case studies with square footage, floor layouts, and realistic budgets. Send project inquiries directly to principal architects.
           </p>
 
           {/* Search Box */}
           <form
             onSubmit={handleSearchSubmit}
-            className="max-w-3xl mx-auto bg-white/95 backdrop-blur-lg p-2 rounded-2xl sm:rounded-full shadow-2xl flex flex-col sm:flex-row items-center gap-2 border border-atelier-200"
+            className="max-w-3xl mx-auto bg-white p-2 rounded-xl shadow-lg flex flex-col sm:flex-row items-center gap-2 border border-gray-300 text-gray-900"
           >
-            <div className="flex-1 flex items-center gap-3 px-4 w-full">
-              <Search className="w-5 h-5 text-atelier-600 shrink-0" />
+            <div className="flex-1 flex items-center gap-2 px-3 w-full">
+              <Search className="w-4 h-4 text-gray-400 shrink-0" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by studio name, architectural style, or city..."
-                className="w-full py-2.5 text-sm text-charcoal-900 bg-transparent outline-none placeholder:text-charcoal-400"
+                placeholder="Search by studio name, style, or specialization..."
+                className="w-full py-2 text-xs sm:text-sm bg-transparent outline-none placeholder:text-gray-400"
               />
             </div>
+
+            <div className="w-full sm:w-44 border-t sm:border-t-0 sm:border-l border-gray-200 px-2">
+              <select
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                className="w-full py-2 text-xs sm:text-sm bg-transparent text-gray-700 outline-none cursor-pointer"
+              >
+                <option value="">All Cities</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi NCR</option>
+                <option value="Goa">Goa</option>
+                <option value="Kochi">Kochi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Pune">Pune</option>
+              </select>
+            </div>
+
             <button
               type="submit"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-charcoal-900 hover:bg-atelier-700 text-white text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shrink-0 shadow-md"
+              className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold uppercase tracking-wider transition-colors shrink-0"
             >
-              <span>Explore Studios</span>
-              <ArrowRight className="w-4 h-4" />
+              Search
             </button>
           </form>
 
-          {/* Quick Style Pills */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs text-charcoal-400">
-            <span className="text-atelier-400 font-medium">Trending Disciplines:</span>
-            {['Modern Minimalist', 'Biophilic Contemporary', 'Scandinavian', 'Penthouse Architecture', 'Courtyard Homes'].map((tag) => (
+          {/* Quick city tags */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-xs text-gray-400">
+            <span>Popular Cities:</span>
+            {['Bangalore', 'Mumbai', 'Goa', 'Delhi NCR', 'Pune'].map((city) => (
               <button
-                key={tag}
-                onClick={() => navigate(`/designers?style=${encodeURIComponent(tag)}`)}
-                className="px-3 py-1 rounded-full bg-charcoal-800/80 hover:bg-charcoal-700 text-charcoal-300 hover:text-white border border-charcoal-700 transition-colors"
+                key={city}
+                onClick={() => navigate(`/designers?location=${encodeURIComponent(city)}`)}
+                className="px-2.5 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-gray-300 transition-colors"
               >
-                {tag}
+                {city}
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Institutional Standards Banner */}
-      <section className="bg-[#F5F0E8] border-y border-atelier-200 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-6 text-xs text-charcoal-700">
-          <div className="flex items-center gap-3">
-            <ShieldCheck className="w-5 h-5 text-atelier-700" />
-            <span className="font-semibold text-charcoal-900">Standardized Portfolios</span>
-            <span className="hidden md:inline text-charcoal-500">• Complete case studies with budget & square footage</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Award className="w-5 h-5 text-atelier-700" />
-            <span className="font-semibold text-charcoal-900">Accredited Professionals</span>
-            <span className="hidden md:inline text-charcoal-500">• Council of Architecture & IIID members</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Briefcase className="w-5 h-5 text-atelier-700" />
-            <span className="font-semibold text-charcoal-900">Direct Client Inquiries</span>
-            <span className="hidden md:inline text-charcoal-500">• Transparent proposal workflows</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Curated Disciplines Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+      {/* Categories */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8">
           <div>
-            <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-2">
-              Curated Architectural Disciplines
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-950">
-              Tailored to Your Living Philosophy
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+              Project Categories & Specializations
             </h2>
+            <p className="text-xs text-gray-500 mt-1">
+              Select a discipline to discover specialized architecture and design studios.
+            </p>
           </div>
           <Link
             to="/designers"
-            className="mt-4 sm:mt-0 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-atelier-700 hover:text-atelier-900 group"
+            className="mt-2 sm:mt-0 text-xs font-semibold text-amber-700 hover:text-amber-800 flex items-center gap-1"
           >
-            <span>View All Specializations</span>
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <span>View All Designers</span>
+            <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((cat, idx) => (
+          {projectCategories.map((item, idx) => (
             <div
               key={idx}
-              onClick={() => navigate(`/designers?style=${encodeURIComponent(cat.query)}`)}
-              className="group cursor-pointer rounded-2xl overflow-hidden bg-white border border-atelier-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+              onClick={() => navigate(`/designers?specialization=${encodeURIComponent(item.category)}`)}
+              className="group cursor-pointer rounded-xl border border-gray-200 overflow-hidden hover:border-gray-400 hover:shadow-md transition-all flex flex-col bg-white"
             >
-              <div className="relative h-56 overflow-hidden bg-charcoal-900">
+              <div className="h-44 overflow-hidden bg-gray-100">
                 <img
-                  src={cat.image}
-                  alt={cat.title}
-                  className="w-full h-full object-cover img-zoom"
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/80 via-transparent to-transparent" />
-                <span className="absolute bottom-3 left-4 text-xs font-semibold text-atelier-300">
-                  Explore Case Studies
-                </span>
               </div>
-              <div className="p-5 flex-1 flex flex-col justify-between">
+              <div className="p-4 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="font-serif text-lg font-bold text-charcoal-900 group-hover:text-atelier-700 transition-colors">
-                    {cat.title}
+                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-amber-700 transition-colors">
+                    {item.title}
                   </h3>
-                  <p className="text-xs text-charcoal-600 mt-1 leading-relaxed">
-                    {cat.desc}
+                  <p className="text-xs text-gray-600 mt-1 leading-normal">
+                    {item.desc}
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-atelier-100 flex items-center justify-between text-xs font-medium text-atelier-700">
+                <div className="mt-3 pt-2 border-t border-gray-100 text-[11px] font-semibold text-amber-700 flex items-center gap-1">
                   <span>Browse Studios</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3 h-3" />
                 </div>
               </div>
             </div>
@@ -221,170 +204,141 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Studios Showcase */}
-      <section className="bg-[#F5F0E8] py-20 border-y border-atelier-200">
+      {/* Featured Studios */}
+      <section className="bg-gray-50 border-y border-gray-200 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-2">
-              Featured Studios & Architects
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-950 mb-3">
-              Visionary Designers Shaping Spaces
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Featured Architecture Studios
             </h2>
-            <p className="text-xs sm:text-sm text-charcoal-600">
-              Selected for exceptional spatial craftsmanship, sustainable materiality, and verified client testimonials.
+            <p className="text-xs text-gray-500 mt-1">
+              Accredited design practices with completed real-world portfolios and verified client reviews.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {featuredDesigners.slice(0, 3).map((designer) => (
               <div
                 key={designer.id}
-                className="bg-white rounded-3xl overflow-hidden border border-atelier-200/90 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col"
+                className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
               >
-                {/* Cover & Avatar Header */}
-                <div className="relative h-44 bg-charcoal-900 overflow-hidden">
-                  <img
-                    src={designer.coverImageUrl || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'}
-                    alt={designer.studioName}
-                    className="w-full h-full object-cover img-zoom"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/70 to-transparent" />
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-charcoal-900 text-[11px] font-semibold flex items-center gap-1 shadow-sm">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                    <span>{designer.averageRating} ({designer.reviewCount})</span>
+                <div>
+                  <div className="h-44 bg-gray-200 relative overflow-hidden">
+                    <img
+                      src={designer.coverImageUrl}
+                      alt={designer.studioName}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-2.5 right-2.5 bg-white/95 px-2 py-0.5 rounded text-[11px] font-semibold text-gray-800 flex items-center gap-1 shadow-xs">
+                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                      <span>{designer.averageRating} ({designer.reviewCount})</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-3 -mt-12 mb-3">
-                      <img
-                        src={designer.avatarUrl || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80'}
-                        alt={designer.studioName}
-                        className="w-16 h-16 rounded-2xl object-cover border-4 border-white shadow-md bg-white"
-                      />
-                      <div className="pt-6">
-                        <span className="text-[10px] text-atelier-700 font-semibold uppercase tracking-wider block">
-                          {designer.budgetTier} Budget Tier • {designer.experienceYears}y Exp
-                        </span>
-                        <h3 className="font-serif text-lg font-bold text-charcoal-950 leading-tight">
-                          {designer.studioName}
-                        </h3>
-                      </div>
+                  <div className="p-5">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[11px] font-semibold text-amber-700">
+                        {designer.budgetTier}
+                      </span>
+                      <span className="text-gray-300">•</span>
+                      <span className="text-[11px] text-gray-500">
+                        {designer.experienceYears} Years Exp
+                      </span>
                     </div>
 
-                    <p className="text-xs text-charcoal-500 flex items-center gap-1 mb-3">
-                      <MapPin className="w-3.5 h-3.5 text-atelier-600 shrink-0" />
+                    <h3 className="text-base font-bold text-gray-900 leading-snug">
+                      {designer.studioName}
+                    </h3>
+
+                    <p className="text-xs text-gray-500 flex items-center gap-1 mt-1 mb-2">
+                      <MapPin className="w-3.5 h-3.5 text-gray-400" />
                       <span>{designer.location}</span>
                     </p>
 
-                    <p className="text-xs text-charcoal-600 line-clamp-3 leading-relaxed mb-4">
+                    <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3">
                       {designer.bio}
                     </p>
 
-                    {/* Accreditations badge */}
                     {designer.accreditations && (
-                      <div className="p-2.5 rounded-xl bg-atelier-50 border border-atelier-200 text-[11px] text-charcoal-700 mb-4 flex items-center gap-2">
-                        <ShieldCheck className="w-4 h-4 text-atelier-700 shrink-0" />
+                      <div className="p-2 rounded bg-slate-50 border border-slate-200 text-[11px] text-gray-700 flex items-center gap-1.5 mb-2">
+                        <ShieldCheck className="w-3.5 h-3.5 text-slate-700 shrink-0" />
                         <span className="truncate">{designer.accreditations}</span>
                       </div>
                     )}
                   </div>
+                </div>
 
-                  <div className="pt-4 border-t border-atelier-100 flex items-center justify-between gap-3">
-                    <Link
-                      to={`/designers/${designer.id}`}
-                      className="flex-1 py-2.5 px-4 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold text-center uppercase tracking-wider shadow-sm transition-colors"
-                    >
-                      View Portfolio
-                    </Link>
-                  </div>
+                <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+                  <Link
+                    to={`/designers/${designer.id}`}
+                    className="w-full py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1 transition-colors"
+                  >
+                    <span>View Profile & Work</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-8 text-center">
             <Link
               to="/designers"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-atelier-100 text-charcoal-900 border border-atelier-300 text-xs font-semibold uppercase tracking-wider shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 text-xs font-semibold text-gray-800 transition-colors"
             >
               <span>Explore All Registered Studios</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-2">
-            The Commissioning Workflow
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-950 mb-3">
-            Connecting Clients & Designers Seamlessly
+      {/* How it works */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center max-w-xl mx-auto mb-10">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+            How ArchConnect Works
           </h2>
-          <p className="text-xs sm:text-sm text-charcoal-600">
-            A transparent and structured platform built for architectural accuracy, clear scope definitions, and trusted outcomes.
+          <p className="text-xs text-gray-500 mt-1">
+            Simple 3-step process to find, evaluate, and collaborate with verified architects.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-8 rounded-3xl bg-white border border-atelier-200 shadow-sm relative">
-            <span className="font-serif text-5xl font-bold text-atelier-200 absolute top-6 right-6">01</span>
-            <div className="w-12 h-12 rounded-2xl bg-charcoal-900 text-atelier-300 flex items-center justify-center font-bold text-lg mb-6">
-              🔍
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-6 rounded-xl border border-gray-200 bg-white">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm mb-4">
+              1
             </div>
-            <h3 className="font-serif text-xl font-bold text-charcoal-900 mb-2">Discover & Compare</h3>
-            <p className="text-xs text-charcoal-600 leading-relaxed">
-              Filter by architectural style, budget tiers, geographic location, and accreditations. Inspect completed project case studies with photos and square footage.
+            <h3 className="text-sm font-bold text-gray-900 mb-1">
+              Search by City & Budget
+            </h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Filter by project type (Bungalow, Flat, Commercial), location, and budget range in Rupees. Review completed photos and square footages.
             </p>
           </div>
 
-          <div className="p-8 rounded-3xl bg-white border border-atelier-200 shadow-sm relative">
-            <span className="font-serif text-5xl font-bold text-atelier-200 absolute top-6 right-6">02</span>
-            <div className="w-12 h-12 rounded-2xl bg-charcoal-900 text-atelier-300 flex items-center justify-center font-bold text-lg mb-6">
-              📋
+          <div className="p-6 rounded-xl border border-gray-200 bg-white">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm mb-4">
+              2
             </div>
-            <h3 className="font-serif text-xl font-bold text-charcoal-900 mb-2">Send Structured Inquiry</h3>
-            <p className="text-xs text-charcoal-600 leading-relaxed">
-              Submit your property type, timeline, and estimated budget. Directly connect with the principal architect through tracked, private communication threads.
+            <h3 className="text-sm font-bold text-gray-900 mb-1">
+              Send Structured Project Brief
+            </h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Submit your plot size or apartment carpet area, estimated budget, and requirements. The architect reviews the scope and replies directly.
             </p>
           </div>
 
-          <div className="p-8 rounded-3xl bg-white border border-atelier-200 shadow-sm relative">
-            <span className="font-serif text-5xl font-bold text-atelier-200 absolute top-6 right-6">03</span>
-            <div className="w-12 h-12 rounded-2xl bg-charcoal-900 text-atelier-300 flex items-center justify-center font-bold text-lg mb-6">
-              ⭐
+          <div className="p-6 rounded-xl border border-gray-200 bg-white">
+            <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm mb-4">
+              3
             </div>
-            <h3 className="font-serif text-xl font-bold text-charcoal-900 mb-2">Review & Build Trust</h3>
-            <p className="text-xs text-charcoal-600 leading-relaxed">
-              Upon engagement completion, provide verified ratings and reviews to celebrate exceptional craftsmanship and guide the design community.
+            <h3 className="text-sm font-bold text-gray-900 mb-1">
+              Direct Communication & Review
+            </h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Communicate through the project inquiry thread. Once your drawings and project are complete, leave an honest client rating.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Live Statistics / Platform KPIs */}
-      <section className="bg-charcoal-950 text-white py-16 border-t border-charcoal-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <p className="font-serif text-4xl sm:text-5xl font-bold text-atelier-300 mb-1">120+</p>
-            <p className="text-xs uppercase tracking-wider text-charcoal-400">Accredited Studios</p>
-          </div>
-          <div>
-            <p className="font-serif text-4xl sm:text-5xl font-bold text-atelier-300 mb-1">450+</p>
-            <p className="text-xs uppercase tracking-wider text-charcoal-400">Portfolios Published</p>
-          </div>
-          <div>
-            <p className="font-serif text-4xl sm:text-5xl font-bold text-atelier-300 mb-1">98%</p>
-            <p className="text-xs uppercase tracking-wider text-charcoal-400">Client Satisfaction</p>
-          </div>
-          <div>
-            <p className="font-serif text-4xl sm:text-5xl font-bold text-atelier-300 mb-1">1,200+</p>
-            <p className="text-xs uppercase tracking-wider text-charcoal-400">Project Inquiries</p>
           </div>
         </div>
       </section>

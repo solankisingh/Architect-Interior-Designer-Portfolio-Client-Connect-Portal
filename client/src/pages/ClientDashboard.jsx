@@ -9,12 +9,10 @@ import {
   Compass,
   CheckCircle2,
   Calendar,
-  DollarSign,
   ArrowRight,
   ExternalLink,
   Star,
-  Layers,
-  Sparkles
+  Building
 } from 'lucide-react';
 
 export default function ClientDashboard() {
@@ -43,110 +41,100 @@ export default function ClientDashboard() {
   const completedInquiries = inquiries.filter((i) => i.status === 'COMPLETED').length;
 
   return (
-    <div className="min-h-screen bg-[#FBF9F5] py-10">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Welcome Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-atelier-200">
+        {/* Welcome Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-gray-200">
           <div>
-            <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-1">
-              Client Commission Hub
-            </span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-charcoal-950">
-              Welcome, {user?.name}
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Client Dashboard
             </h1>
-            <p className="text-xs text-charcoal-500 mt-1">
-              Monitor your active project commissions, communicate with architects, and track milestones.
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">
+              Welcome, <strong className="text-gray-800">{user?.name}</strong>. Track your project inquiries, messages, and project milestones.
             </p>
           </div>
 
           <Link
             to="/designers"
-            className="px-6 py-3 rounded-2xl bg-charcoal-900 hover:bg-charcoal-800 text-atelier-100 text-xs font-semibold uppercase tracking-wider flex items-center gap-2 shadow-md self-start sm:self-auto"
+            className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 self-start sm:self-auto transition-colors"
           >
             <Compass className="w-4 h-4" />
-            <span>Discover More Studios</span>
+            <span>Find New Architects</span>
           </Link>
         </div>
 
-        {/* Overview Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          <div className="p-6 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-charcoal-400 font-semibold">Total Inquiries</span>
-            <p className="font-serif text-3xl font-bold text-charcoal-950 mt-1">{totalInquiries}</p>
-            <p className="text-[11px] text-charcoal-500 mt-1">Submitted to accredited studios</p>
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs uppercase font-semibold text-gray-400">Total Inquiries</span>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{totalInquiries}</p>
+            <p className="text-[11px] text-gray-500 mt-0.5">Submitted to architecture firms</p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-atelier-700 font-semibold">Active Inquiries</span>
-            <p className="font-serif text-3xl font-bold text-charcoal-950 mt-1">{activeInquiries}</p>
-            <p className="text-[11px] text-emerald-600 mt-1 font-medium">Under architectural evaluation</p>
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs uppercase font-semibold text-amber-700">Active Discussions</span>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{activeInquiries}</p>
+            <p className="text-[11px] text-emerald-600 mt-0.5 font-medium">Under evaluation or scope accepted</p>
           </div>
 
-          <div className="p-6 rounded-3xl bg-white border border-atelier-200 shadow-sm">
-            <span className="text-xs uppercase tracking-wider text-purple-700 font-semibold">Completed Projects</span>
-            <p className="font-serif text-3xl font-bold text-charcoal-950 mt-1">{completedInquiries}</p>
-            <p className="text-[11px] text-charcoal-500 mt-1">Ready for verified testimonials</p>
+          <div className="p-4 rounded-xl bg-white border border-gray-200 shadow-xs">
+            <span className="text-xs uppercase font-semibold text-gray-500">Completed Contracts</span>
+            <p className="text-2xl font-bold text-gray-900 mt-1">{completedInquiries}</p>
+            <p className="text-[11px] text-gray-500 mt-0.5">Eligible for verified reviews</p>
           </div>
         </div>
 
         {/* Inquiries List */}
-        <div className="bg-white rounded-3xl border border-atelier-200/90 shadow-sm p-6 sm:p-8">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-atelier-100">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-xs p-5 sm:p-6">
+          <div className="mb-5 pb-3 border-b border-gray-100 flex items-center justify-between">
             <div>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-charcoal-950">
-                Your Commission Inquiries
+              <h2 className="text-lg font-bold text-gray-900">
+                Your Project Inquiries
               </h2>
-              <p className="text-xs text-charcoal-500 mt-0.5">
-                Real-time status updates and direct messages from design studios.
-              </p>
+              <p className="text-xs text-gray-500">Real-time status updates and direct messages from architects.</p>
             </div>
           </div>
 
           {loading ? (
-            <div className="py-16 text-center">
-              <div className="w-8 h-8 border-4 border-atelier-300 border-t-atelier-700 rounded-full animate-spin mx-auto mb-3" />
-              <p className="text-xs text-charcoal-500">Loading your project inquiries...</p>
+            <div className="py-12 text-center text-xs text-gray-500">
+              Loading your inquiries...
             </div>
           ) : inquiries.length === 0 ? (
-            <div className="py-16 text-center max-w-md mx-auto">
-              <div className="w-14 h-14 rounded-3xl bg-atelier-100 text-atelier-700 flex items-center justify-center font-bold text-xl mx-auto mb-4">
-                📐
-              </div>
-              <h3 className="font-serif text-lg font-bold text-charcoal-900 mb-1">No Inquiries Submitted Yet</h3>
-              <p className="text-xs text-charcoal-500 mb-6">
-                Explore our curated directory of certified architects and interior designers to commission your next project.
+            <div className="py-12 text-center max-w-sm mx-auto">
+              <Building className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+              <h3 className="text-sm font-bold text-gray-800 mb-1">No Inquiries Submitted Yet</h3>
+              <p className="text-xs text-gray-500 mb-4">
+                Explore registered architects and send a project brief to get started.
               </p>
               <Link
                 to="/designers"
-                className="px-6 py-2.5 rounded-full bg-charcoal-900 text-white text-xs font-semibold uppercase tracking-wider inline-flex items-center gap-2"
+                className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold inline-flex items-center gap-1.5"
               >
-                <span>Browse Studios</span>
+                <span>Browse Directory</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {inquiries.map((inq) => (
                 <div
                   key={inq.id}
-                  className="p-5 sm:p-6 rounded-2xl bg-[#FBF9F5] border border-atelier-200 hover:border-atelier-400 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                  className="p-4 sm:p-5 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gray-50/40"
                 >
-                  <div className="space-y-2 flex-1">
+                  <div className="space-y-1.5 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <StatusBadge status={inq.status} />
-                      <span className="text-[11px] text-charcoal-500 font-medium">
+                      <span className="text-[11px] text-gray-500 font-medium">
                         • {inq.projectCategory} • Submitted on {new Date(inq.createdAt).toLocaleDateString()}
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-lg font-bold text-charcoal-950">
+                    <h3 className="text-base font-bold text-gray-900">
                       {inq.projectTitle}
                     </h3>
 
-                    <div className="flex flex-wrap items-center gap-4 text-xs text-charcoal-600">
-                      <span className="font-semibold text-charcoal-900">
-                        Studio: {inq.designer?.studioName}
-                      </span>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600">
+                      <span>Studio: <strong className="text-gray-900">{inq.designer?.studioName}</strong></span>
                       <span>•</span>
                       <span>Budget: {inq.budgetRange}</span>
                       <span>•</span>
@@ -154,7 +142,7 @@ export default function ClientDashboard() {
                     </div>
 
                     {inq.messages && inq.messages.length > 0 && (
-                      <p className="text-xs text-charcoal-500 italic line-clamp-1 bg-white/70 p-2 rounded-lg border border-atelier-100">
+                      <p className="text-xs text-gray-600 italic line-clamp-1 bg-white p-2 rounded border border-gray-200 mt-1">
                         Latest: "{inq.messages[0].messageText}"
                       </p>
                     )}
@@ -163,15 +151,15 @@ export default function ClientDashboard() {
                   <div className="flex sm:flex-col items-center gap-2 shrink-0 w-full sm:w-auto">
                     <Link
                       to={`/inquiries/${inq.id}`}
-                      className="flex-1 sm:flex-none py-2.5 px-5 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm text-center"
+                      className="flex-1 sm:flex-none py-2 px-4 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors text-center"
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
-                      <span>Open Thread</span>
+                      <span>View Discussion</span>
                     </Link>
 
                     <Link
                       to={`/designers/${inq.designer?.id}`}
-                      className="py-2.5 px-3 rounded-xl border border-atelier-300 hover:bg-atelier-100 text-charcoal-700 text-xs font-medium flex items-center justify-center"
+                      className="py-2 px-3 rounded-lg border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-medium flex items-center justify-center"
                       title="View Studio Profile"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />

@@ -1,70 +1,67 @@
-# AtelierConnect | Architect & Interior Designer Portfolio & Client Connect Portal
+# ArchConnect | Architect & Interior Designer Portfolio & Client Connect Portal
 
-A modern, responsive full-stack web application designed for accredited architects, interior designers, and clients. Built in strict alignment with statutory professional standards (such as the **Council of Architecture (COA)** and the **Indian Institute of Interior Designers (IIID)**), the platform bridges the gap between independent design practices and property owners seeking bespoke architectural expertise.
+A responsive full-stack web application connecting property owners, home builders, and commercial clients with accredited architects and interior design professionals. Developed in alignment with statutory standards set by the **Council of Architecture (COA)** and the **Indian Institute of Interior Designers (IIID)**.
 
 ---
 
-## 🏛️ Key Features & Interconnected Pages (8 Pages)
+## 🏛️ Platform Pages (8 Interconnected Pages)
 
-1. **Home / Showcase Landing (`/`)**:
-   - Hero search by studio name, specialization, or city.
-   - Institutional standards ribbon (COA & IIID alignment).
-   - Curated architectural disciplines (*Modern Minimalist, Biophilic Contemporary, Scandinavian, Industrial Loft*).
-   - Featured studio showcases with live rating badges, location, and case study previews.
-   - Platform statistics & commissioning workflow walkthrough.
+1. **Home / Discovery (`/`)**:
+   - City & specialization search (Bangalore, Mumbai, Goa, Delhi NCR, Kochi, Pune).
+   - Real project categories: Residential Villas, Apartment & Penthouse Interiors, Commercial Workspaces, Holiday Homes.
+   - Featured studio showcases with COA registration badges, city, and verified reviews.
+   - 3-step commissioning workflow explanation.
 
-2. **Designer Directory & Discovery (`/designers`)**:
-   - Live multi-filtering by:
-     - **Design Style**: Modern Minimalist, Biophilic Contemporary, Scandinavian, Industrial Loft, Neo-Classical, Mediterranean Warmth.
-     - **Budget Tier**: `$`, `$$`, `$$$`, `$$$$`.
-     - **Location & Specialization**: Residential, Penthouse, Commercial, Sustainable.
-     - **Sort by**: Highest Rated, Years of Experience, Most Reviewed, Recently Joined.
-   - Case study thumbnail previews, verified badges, and quick links.
+2. **Architect & Designer Directory (`/designers`)**:
+   - Multi-filtering by location (city), specialization, design style, and budget range in Rupees.
+   - Sort by highest rating, years of experience, review count, and registration date.
+   - Project preview thumbnails, verified registration badges, and direct portfolio links.
 
-3. **Designer Portfolio & Profile Detail (`/designers/:id`)**:
-   - Studio cover header, credentials, COA/IIID accreditations, and philosophy.
-   - Categorized portfolio projects with specifications (sq ft, completion year, estimated budget).
-   - Interactive **Project Lightbox Modal**: Multi-photo carousel, thumbnail navigator, and detailed structural narratives.
-   - Verified client reviews with 1–5 star ratings and project category tags.
-   - Prominent **"Initiate Project Inquiry"** commission modal trigger.
+3. **Studio Portfolio & Profile (`/designers/:id`)**:
+   - Detailed studio profile, Council of Architecture (COA) registration number, practice philosophy.
+   - Categorized completed projects with drawings and photographs.
+   - Project specs: location, completion year, built-up / carpet area (sq.ft), estimated budget in Lakhs/Crores.
+   - Photo gallery lightbox with multi-photo carousel and thumbnail selector.
+   - Verified client reviews with star ratings.
+   - "Send Project Inquiry" modal.
 
-4. **Inquiry View & Communication Hub (`/inquiries/:id`)**:
-   - Complete project requirement brief (budget, timeline, location, scope).
-   - Real-time status lifecycle tracker (`PENDING`, `UNDER_REVIEW`, `ACCEPTED`, `DECLINED`, `COMPLETED`).
-   - Designers & Admins can update status directly from the view.
-   - Threaded conversation feed between client and architect with message timestamps.
+4. **Inquiry & Project Communication Hub (`/inquiries/:id`)**:
+   - Project brief display: Plot / carpet area, site city, estimated budget, timeline, scope.
+   - Status workflow (`Pending Review`, `Under Review`, `Accepted (Scope Active)`, `Declined`, `Completed Engagement`).
+   - Designers and admins can update scope status directly.
+   - Chronological message feed between client and architect with send box.
+   - Print scope brief option.
 
 5. **Authentication Portal (`/login` & `/register`)**:
-   - Dual-mode registration for **Clients** and **Designers/Architects** (with studio name, experience, styles, budget tier).
-   - **🚀 1-Click Fast Demo Login Switcher**: Instant buttons to test as **Client**, **Architect**, or **Admin** with zero typing.
+   - Clean registration for **Clients** and **Architects / Interior Designers** (with studio name, experience, city, budget tier).
+   - Test login credentials helper for fast reviewer evaluation.
 
 6. **Client Dashboard (`/client/dashboard`)**:
-   - Overview metrics: Inquiries Sent, Active Discussions, Completed Projects.
-   - Inquiries management table with status badges and latest message previews.
-   - Quick inquiry opener and studio discovery.
+   - Overview metrics: Total Inquiries, Active Discussions, Completed Contracts.
+   - Inquiries list with status badges, latest message preview, and direct thread link.
 
-7. **Designer Studio Dashboard (`/designer/dashboard`)**:
-   - Studio performance KPI metrics (portfolios, inquiries, ratings, experience).
-   - **Full Portfolio CRUD**: Add New Project modal, edit existing projects, and delete projects.
-   - **Inquiries Inbox**: Review incoming client leads, update commission status (`Accept Scope`, `Under Review`, `Decline`), and reply to threads.
-   - **Studio Settings Editor**: Update bio, taglines, base location, budget tier, and accreditations.
+7. **Architect Studio Workspace (`/designer/dashboard`)**:
+   - Studio statistics (portfolios published, active client inquiries, rating, experience).
+   - Full Portfolio CRUD: Add Project modal (with image file upload or URL, category, sq.ft, budget in ₹, city), Edit, Delete.
+   - Inquiries Inbox: Accept scope, change status, and reply to client inquiries.
+   - Studio Profile Settings: Edit firm name, bio, city, budget tier, and COA registration number.
 
-8. **Admin Governance & Moderation Console (`/admin`)**:
-   - System KPIs: Registered Studios, Active Clients, Published Portfolios, Inquiries Submitted, Conversion Rate %.
-   - User Management table: Search users, toggle COA verification badges, toggle spotlight status, delete accounts.
-   - Portfolio Content Moderation: Inspect and remove non-compliant projects.
+8. **Admin Governance Console (`/admin`)**:
+   - Key platform metrics (total designers, clients, portfolios, inquiries, conversion rate).
+   - User Management table: Search users, filter by role, toggle COA verification badges, toggle spotlight status, delete users.
+   - Portfolio Content Moderation: Inspect and remove non-compliant project entries.
 
 ---
 
-## ⚡ 1-Click Demo Accounts
+## 🔑 Test Credentials for Evaluation
 
-A floating **Demo Switcher** widget is located at the bottom-right corner of all pages. Alternatively, use the following credentials on `/login`:
+The login page (`/login`) includes one-click autofill buttons for these test accounts:
 
-| Persona | Email | Password | Role & Purpose |
+| Role | Email | Password | Details |
 |---|---|---|---|
-| 👑 **Platform Admin** | `admin@atelier.com` | `password123` | Elena Vance (Curator) — Superuser governance & KPIs |
-| 🏛️ **Architect / Designer** | `designer@atelier.com` | `password123` | Ar. Vikramaditya Singhania — Principal Architect at Singhania Atelier |
-| 🏡 **Client / Homeowner** | `client@atelier.com` | `password123` | Aarav & Meera Kapoor — Discerning property owners |
+| 🏡 **Client** | `client@architectportal.com` | `password123` | Amit & Neha Verma (Homeowners building a villa) |
+| 🏛️ **Architect** | `designer@architectportal.com` | `password123` | Ar. Rajesh Nair (Studio Vismaya, CA/2009/44120) |
+| 👑 **Admin** | `admin@architectportal.com` | `password123` | Pooja Sharma (Portal Administrator) |
 
 ---
 
@@ -72,40 +69,29 @@ A floating **Demo Switcher** widget is located at the bottom-right corner of all
 
 * **Frontend**: React 18, Vite, Tailwind CSS, Lucide React, Axios, React Router 6.
 * **Backend**: Node.js, Express.js REST API, JSON Web Tokens (JWT), bcryptjs password hashing.
-* **Database**: Prisma ORM with SQLite for zero-dependency local execution, effortlessly scalable to PostgreSQL or MongoDB for production.
-* **Styling**: Minimalist luxury architectural design system (warm stone, obsidian charcoal, subtle gold/champagne accents, editorial typography).
+* **Database**: Prisma ORM with SQLite for zero-config persistence (`dev.db`).
+* **Design Philosophy**: Clean, standard, professional layouts without artificial gimmicks or emojis.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Running the Project
 
-### 1. Start Both Frontend and Backend (Development Mode)
+### Development Mode
 ```bash
-# From project root:
+# Starts both Express API on port 5000 and Vite on port 5173
 node dev.js
 ```
 * **Frontend**: [http://localhost:5173](http://localhost:5173)
 * **Backend API**: [http://localhost:5000/api](http://localhost:5000/api)
 
-### 2. Re-seed Database with Sample Architectural Studios & Projects
+### Re-seed Database with Clean Data
 ```bash
 node server/prisma/seed.js
 ```
 
-### 3. Production Build & Unified Server
+### Production Build & Unified Server
 ```bash
-# Build frontend
 npm run build
-
-# Start unified production server (serves both API and SPA on port 5000)
 node start.js
 ```
-Visit [http://localhost:5000](http://localhost:5000) for the live unified production application.
-
----
-
-## 🌐 Cloud Deployment (Render / Vercel / Railway)
-The project includes unified single-port serving:
-1. Set the root build command to: `npm run build`
-2. Set the start command to: `node start.js`
-3. Environment variables: `PORT=5000`, `JWT_SECRET=your-secret-key`, `DATABASE_URL="file:./dev.db"` (or Postgres connection string).
+The server serves both the REST API and the built client on `http://localhost:5000`.

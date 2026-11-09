@@ -9,7 +9,7 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewTitle, setReviewTitle] = useState('');
   const [comment, setComment] = useState('');
-  const [projectCategory, setProjectCategory] = useState('Residential Architecture');
+  const [projectCategory, setProjectCategory] = useState('Residential Villa');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -19,12 +19,12 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isAuthenticated) {
-      setError('You must be signed in as a client to leave a verified review.');
+      setError('You must be signed in as a client to leave a review.');
       return;
     }
 
     if (!comment.trim()) {
-      setError('Please provide written feedback about your experience.');
+      setError('Please provide feedback about your project experience.');
       return;
     }
 
@@ -45,7 +45,7 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
 
       setTimeout(() => {
         onClose();
-      }, 1200);
+      }, 1000);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to submit review.');
     } finally {
@@ -54,48 +54,47 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-charcoal-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative bg-[#FBF9F5] rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-atelier-200 animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div className="relative bg-white rounded-xl max-w-lg w-full p-6 shadow-xl border border-gray-200">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-charcoal-400 hover:text-charcoal-800 p-2 rounded-full hover:bg-atelier-100 transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1 rounded-md"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="mb-6">
-          <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-1">
-            Client Testimonial & Review
+        <div className="mb-5">
+          <span className="text-[11px] uppercase tracking-wider text-amber-700 font-bold block mb-1">
+            Client Review & Rating
           </span>
-          <h3 className="font-serif text-2xl font-bold text-charcoal-950">
-            Rate {designer.studioName}
+          <h3 className="text-xl font-bold text-gray-900">
+            Review {designer.studioName}
           </h3>
-          <p className="text-xs text-charcoal-500 mt-1">
-            Share your feedback on architectural vision, communication, and execution.
+          <p className="text-xs text-gray-500 mt-0.5">
+            Share your feedback on architectural drawings, communication, and site supervision.
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {success ? (
-          <div className="py-8 text-center space-y-3">
-            <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto animate-bounce" />
-            <h4 className="font-serif text-xl font-bold text-charcoal-900">Review Submitted!</h4>
-            <p className="text-xs text-charcoal-600">Thank you for helping build trusted architectural excellence.</p>
+          <div className="py-8 text-center space-y-2">
+            <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
+            <h4 className="text-base font-bold text-gray-900">Review Submitted</h4>
+            <p className="text-xs text-gray-500">Thank you for sharing your experience.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Star Rating Selector */}
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1.5">
-                Overall Experience Rating (1 - 5 Stars) *
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Rating (1 to 5 Stars) *
               </label>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
@@ -106,78 +105,77 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
                     className="p-1 transition-transform hover:scale-110"
                   >
                     <Star
-                      className={`w-7 h-7 ${
+                      className={`w-6 h-6 ${
                         (hoverRating || rating) >= star
                           ? 'fill-amber-400 text-amber-500'
-                          : 'text-atelier-300'
+                          : 'text-gray-300'
                       }`}
                     />
                   </button>
                 ))}
-                <span className="text-xs font-medium text-charcoal-600 ml-2">
+                <span className="text-xs font-semibold text-gray-700 ml-2">
                   {rating} / 5 Stars
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                Headline / Review Title
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Headline / Title
               </label>
               <input
                 type="text"
                 value={reviewTitle}
                 onChange={(e) => setReviewTitle(e.target.value)}
-                placeholder="e.g. Masterful spatial planning and effortless communication"
-                className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
+                placeholder="e.g. Accurate drawings and smooth site coordination"
+                className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Project Category
               </label>
               <select
                 value={projectCategory}
                 onChange={(e) => setProjectCategory(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white"
+                className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
               >
-                <option value="Residential Architecture">Residential Architecture</option>
-                <option value="Luxury Penthouse">Luxury Penthouse</option>
-                <option value="Commercial Space">Commercial Space</option>
-                <option value="Interior Renovation">Interior Renovation</option>
-                <option value="Landscape & Courtyard">Landscape & Courtyard</option>
+                <option value="Residential Villa">Residential Villa</option>
+                <option value="Apartment Interior">Apartment Interior</option>
+                <option value="Commercial Workspace">Commercial Workspace</option>
+                <option value="Holiday Home">Holiday Home</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-charcoal-700 mb-1">
-                Written Testimonial *
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
+                Detailed Feedback *
               </label>
               <textarea
-                rows="4"
+                rows="3"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="Detail the collaboration, material choices, transparency with timelines, and final outcome..."
-                className="w-full px-4 py-2.5 rounded-xl border border-atelier-300 focus:border-atelier-600 outline-none text-sm bg-white resize-none"
+                placeholder="Detail the collaboration, drawing revisions, adherence to budget, and site outcome..."
+                className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
                 required
               />
             </div>
 
-            <div className="pt-2 flex items-center justify-end gap-3">
+            <div className="pt-2 flex items-center justify-end gap-2 border-t border-gray-100">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-xs font-medium text-charcoal-600 hover:text-charcoal-900"
+                className="px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2.5 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-atelier-100 text-xs font-semibold tracking-wider uppercase shadow-md transition-all"
+                className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors"
               >
-                {loading ? 'Submitting...' : 'Post Verified Review'}
+                {loading ? 'Submitting...' : 'Post Review'}
               </button>
             </div>
           </form>
