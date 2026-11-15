@@ -178,7 +178,7 @@ export default function Home() {
           {/* Popular Cities */}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 text-sm text-gray-400">
             <span className="font-medium text-gray-300">Explore City Hubs:</span>
-            {['Bangalore', 'Mumbai', 'Goa', 'Delhi NCR', 'Kochi', 'Hypertension', 'Pune'].map((city) => (
+            {['Bangalore', 'Mumbai', 'Goa', 'Delhi NCR', 'Kochi', 'Hyderabad', 'Pune'].map((city) => (
               <button
                 key={city}
                 onClick={() => navigate(`/designers?location=${encodeURIComponent(city)}`)}
