@@ -185,7 +185,7 @@ export default function AuthPage({ defaultMode = 'login' }) {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="••••••••"
+                  placeholder="enter password"
                   className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
                   required
                 />

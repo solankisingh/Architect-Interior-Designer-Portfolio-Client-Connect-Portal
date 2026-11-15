@@ -20,10 +20,6 @@ export default function Footer() {
             <p className="text-sm text-gray-400 leading-relaxed">
               Online portfolio and client connection portal for registered architects, interior design studios, and property owners.
             </p>
-            <div className="pt-1 text-sm text-amber-400 flex items-center gap-1.5">
-              <Award className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Aligned with Council of Architecture (COA) Guidelines</span>
-            </div>
           </div>
 
           {/* Specializations */}
@@ -68,7 +64,6 @@ export default function Footer() {
 
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 gap-2">
           <p>© {new Date().getFullYear()} ArchConnect Portal. Architect & Interior Designer Portfolio & Client Connect Portal.</p>
-          <p className="text-gray-400">Full Screen Responsive Architecture Web Application.</p>
         </div>
       </div>
     </footer>

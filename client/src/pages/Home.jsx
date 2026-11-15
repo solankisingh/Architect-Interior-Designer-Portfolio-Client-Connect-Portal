@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import {
@@ -126,11 +126,6 @@ export default function Home() {
         {/* Dark gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent pointer-events-none"></div>
         <div className="relative w-full text-center max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-amber-400 text-sm font-medium mb-6">
-            <Award className="w-4 h-4" />
-            <span>Council of Architecture (COA) &amp; IIID Professional Guidelines Compliant</span>
-          </div>
-
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-5 leading-tight font-sans">
             Connect with Registered Architects &amp; <br className="hidden sm:inline" />
             Interior Designers

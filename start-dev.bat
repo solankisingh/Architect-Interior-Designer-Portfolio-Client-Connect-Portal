@@ -1,4 +1,7 @@
 @echo off
-cd /d "C:\Users\iPC\Desktop\Architect & Interior Designer Portfolio & Client Connect Portal\client"
-npm run dev
-
+cd /d "%~dp0"
+echo ===================================================
+echo Starting ArchiConnect (Frontend + Backend Together)
+echo ===================================================
+node dev.js
+pause

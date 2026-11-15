@@ -211,7 +211,7 @@ export default function DesignersDirectory() {
                   />
                   <div className="absolute top-2.5 right-2.5 bg-white/95 px-2 py-0.5 rounded text-[11px] font-semibold text-gray-800 flex items-center gap-1 shadow-xs">
                     <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                    <span>{designer.averageRating} ({designer.reviewCount})</span>
+                    <span>{designer.reviewCount > 0 ? `${designer.averageRating} (${designer.reviewCount})` : 'Curated Registry'}</span>
                   </div>
 
                   {designer.featured && (

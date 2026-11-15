@@ -153,9 +153,13 @@ export default function DesignerDetail() {
               <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 text-left lg:text-right">
                 <div className="flex items-center gap-1 text-sm font-bold text-gray-900 lg:justify-end">
                   <Star className="w-4 h-4 fill-amber-400 text-amber-500" />
-                  <span>{designer.averageRating} / 5.0</span>
+                  <span>{designer.reviewCount > 0 ? `${designer.averageRating} / 5.0` : 'Curated Registry'}</span>
                 </div>
-                <p className="text-[11px] text-gray-500">Based on {designer.reviews?.length || 0} client reviews</p>
+                <p className="text-[11px] text-gray-500">
+                  {designer.reviewCount > 0
+                    ? `Based on ${designer.reviews?.length || 0} client reviews`
+                    : 'Public professional directory profile'}
+                </p>
               </div>
 
               <button
