@@ -70,13 +70,13 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
           <h3 className="text-xl font-bold text-gray-900">
             Review {designer.studioName}
           </h3>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             Share your feedback on architectural drawings, communication, and site supervision.
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -86,12 +86,12 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
           <div className="py-8 text-center space-y-2">
             <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
             <h4 className="text-base font-bold text-gray-900">Review Submitted</h4>
-            <p className="text-xs text-gray-500">Thank you for sharing your experience.</p>
+            <p className="text-sm text-gray-500">Thank you for sharing your experience.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Rating (1 to 5 Stars) *
               </label>
               <div className="flex items-center gap-1.5">
@@ -113,14 +113,14 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
                     />
                   </button>
                 ))}
-                <span className="text-xs font-semibold text-gray-700 ml-2">
+                <span className="text-sm font-semibold text-gray-700 ml-2">
                   {rating} / 5 Stars
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Headline / Title
               </label>
               <input
@@ -128,18 +128,18 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
                 value={reviewTitle}
                 onChange={(e) => setReviewTitle(e.target.value)}
                 placeholder="e.g. Accurate drawings and smooth site coordination"
-                className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Project Category
               </label>
               <select
                 value={projectCategory}
                 onChange={(e) => setProjectCategory(e.target.value)}
-                className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
+                className="w-full px-2.5 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
               >
                 <option value="Residential Villa">Residential Villa</option>
                 <option value="Apartment Interior">Apartment Interior</option>
@@ -149,7 +149,7 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Detailed Feedback *
               </label>
               <textarea
@@ -157,7 +157,7 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Detail the collaboration, drawing revisions, adherence to budget, and site outcome..."
-                className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
                 required
               />
             </div>
@@ -166,14 +166,14 @@ export default function ReviewModal({ designer, isOpen, onClose, onSuccess }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900"
+                className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors"
+                className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold uppercase tracking-wider transition-colors"
               >
                 {loading ? 'Submitting...' : 'Post Review'}
               </button>

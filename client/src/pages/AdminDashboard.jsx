@@ -100,21 +100,21 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-gray-200">
         <div>
-          <div className="flex items-center gap-1.5 text-xs uppercase font-bold text-slate-700 tracking-wider mb-1">
+          <div className="flex items-center gap-1.5 text-sm uppercase font-bold text-slate-700 tracking-wider mb-1">
             <ShieldAlert className="w-4 h-4 text-slate-700" />
             <span>Portal Administration & Moderation</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Admin Governance Console
           </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             Verify Council of Architecture (COA) credentials, monitor portfolio uploads, and oversee user activity.
           </p>
         </div>
 
         <button
           onClick={fetchAdminData}
-          className="px-4 py-2 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
+          className="px-4 py-2 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Refresh Data</span>
@@ -125,33 +125,33 @@ export default function AdminDashboard() {
       {stats && (
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-8">
           <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-            <span className="text-xs uppercase font-semibold text-gray-400">Architects</span>
+            <span className="text-sm uppercase font-semibold text-gray-400">Architects</span>
             <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalDesigners}</p>
-            <p className="text-xs text-gray-500 mt-0.5">COA registered firms</p>
+            <p className="text-sm text-gray-500 mt-0.5">COA registered firms</p>
           </div>
 
           <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-            <span className="text-xs uppercase font-semibold text-gray-400">Clients</span>
+            <span className="text-sm uppercase font-semibold text-gray-400">Clients</span>
             <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalClients}</p>
-            <p className="text-xs text-gray-500 mt-0.5">Active property owners</p>
+            <p className="text-sm text-gray-500 mt-0.5">Active property owners</p>
           </div>
 
           <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-            <span className="text-xs uppercase font-semibold text-gray-400">Portfolios</span>
+            <span className="text-sm uppercase font-semibold text-gray-400">Portfolios</span>
             <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalProjects}</p>
-            <p className="text-xs text-gray-500 mt-0.5">Verified case studies</p>
+            <p className="text-sm text-gray-500 mt-0.5">Verified case studies</p>
           </div>
 
           <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-            <span className="text-xs uppercase font-semibold text-gray-400">Inquiries</span>
+            <span className="text-sm uppercase font-semibold text-gray-400">Inquiries</span>
             <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalInquiries}</p>
-            <p className="text-xs text-emerald-600 font-medium mt-0.5">{stats.acceptedInquiries} accepted</p>
+            <p className="text-sm text-emerald-600 font-medium mt-0.5">{stats.acceptedInquiries} accepted</p>
           </div>
 
           <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs col-span-2 sm:col-span-1">
-            <span className="text-xs uppercase font-semibold text-gray-400">Conversion</span>
+            <span className="text-sm uppercase font-semibold text-gray-400">Conversion</span>
             <p className="text-3xl font-bold text-gray-900 mt-1">{stats.conversionRate}%</p>
-            <p className="text-xs text-gray-500 mt-0.5">Inquiry to commission</p>
+            <p className="text-sm text-gray-500 mt-0.5">Inquiry to commission</p>
           </div>
         </div>
       )}
@@ -191,16 +191,16 @@ export default function AdminDashboard() {
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 placeholder="Search user by name or email..."
-                className="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
+                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500">Filter Role:</span>
+              <span className="text-sm text-gray-500">Filter Role:</span>
               <select
                 value={userRoleFilter}
                 onChange={(e) => setUserRoleFilter(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-gray-300 text-xs bg-white"
+                className="px-3 py-2 rounded-lg border border-gray-300 text-sm bg-white"
               >
                 <option value="All">All Roles</option>
                 <option value="DESIGNER">Designers / Architects</option>
@@ -211,7 +211,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-gray-700">
+            <table className="w-full text-left text-sm text-gray-700">
               <thead className="bg-gray-50 text-gray-900 uppercase font-semibold text-[10px] tracking-wider border-y border-gray-200">
                 <tr>
                   <th className="py-3 px-4">User</th>
@@ -298,7 +298,7 @@ export default function AdminDashboard() {
           <h2 className="text-xl font-bold text-gray-900 mb-1">
             Portfolio Project Moderation
           </h2>
-          <p className="text-xs text-gray-500 mb-6">
+          <p className="text-sm text-gray-500 mb-6">
             Inspect uploaded projects to ensure high architectural resolution and prevent copyright infringement.
           </p>
 
@@ -318,7 +318,7 @@ export default function AdminDashboard() {
                   <div className="p-4">
                     <h4 className="font-bold text-gray-900 text-sm mb-0.5">{proj.title}</h4>
                     <p className="text-[11px] text-gray-500 mb-1.5">Studio: {proj.designer?.studioName}</p>
-                    <p className="text-xs text-gray-600 line-clamp-2">{proj.description}</p>
+                    <p className="text-sm text-gray-600 line-clamp-2">{proj.description}</p>
                   </div>
                 </div>
 
@@ -326,7 +326,7 @@ export default function AdminDashboard() {
                   <span className="text-[10px] text-gray-400">{proj.style}</span>
                   <button
                     onClick={() => handleDeleteProject(proj.id)}
-                    className="px-3 py-1 rounded bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1"
+                    className="px-3 py-1 rounded bg-red-50 hover:bg-red-100 text-red-700 text-sm font-semibold flex items-center gap-1"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Remove</span>

@@ -76,7 +76,7 @@ export default function DesignersDirectory() {
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Find Architects & Interior Designers
         </h1>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+        <p className="text-sm sm:text-sm text-gray-500 mt-1">
           Browse verified architecture practices, review portfolio drawings & project photos, and commission work across India.
         </p>
       </div>
@@ -93,7 +93,7 @@ export default function DesignersDirectory() {
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleApplyFilters()}
               placeholder="Search studio name, specialization, keywords..."
-              className="w-full pl-9 pr-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
             />
           </div>
 
@@ -102,7 +102,7 @@ export default function DesignersDirectory() {
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none cursor-pointer bg-white"
+              className="w-full px-2.5 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none cursor-pointer bg-white"
             >
               <option value="All">All Locations</option>
               <option value="Bangalore">Bangalore</option>
@@ -120,7 +120,7 @@ export default function DesignersDirectory() {
             <select
               value={specialization}
               onChange={(e) => setSpecialization(e.target.value)}
-              className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none cursor-pointer bg-white"
+              className="w-full px-2.5 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none cursor-pointer bg-white"
             >
               <option value="All">All Disciplines</option>
               <option value="Residential">Residential Architecture</option>
@@ -135,7 +135,7 @@ export default function DesignersDirectory() {
           <div className="flex items-center gap-2">
             <button
               onClick={handleApplyFilters}
-              className="flex-1 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors"
+              className="flex-1 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold uppercase tracking-wider transition-colors"
             >
               Apply Filter
             </button>
@@ -151,7 +151,7 @@ export default function DesignersDirectory() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-xs text-gray-500">
+        <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-sm text-gray-500">
           <span>
             Showing <strong className="text-gray-900">{designers.length}</strong> registered studios
           </span>
@@ -178,18 +178,18 @@ export default function DesignersDirectory() {
 
       {/* Full-width Studio Cards Grid (4 columns on xl) */}
       {loading ? (
-        <div className="py-16 text-center text-xs text-gray-500">
+        <div className="py-16 text-center text-sm text-gray-500">
           Loading design studios...
         </div>
       ) : designers.length === 0 ? (
         <div className="py-16 text-center bg-white rounded-xl border border-gray-200 p-8 max-w-md mx-auto">
           <h3 className="text-base font-bold text-gray-800 mb-1">No Studios Found</h3>
-          <p className="text-xs text-gray-500 mb-4">
+          <p className="text-sm text-gray-500 mb-4">
             Try broadening your location or specialization filter.
           </p>
           <button
             onClick={handleResetFilters}
-            className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-medium"
+            className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium"
           >
             Reset All Filters
           </button>
@@ -233,18 +233,18 @@ export default function DesignersDirectory() {
                       <h2 className="text-base font-bold text-gray-900 leading-tight">
                         {designer.studioName}
                       </h2>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="text-sm text-gray-500 mt-0.5">
                         {designer.user?.name} • {designer.experienceYears}y exp
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-500 flex items-center gap-1 mb-2">
+                  <p className="text-sm text-gray-500 flex items-center gap-1 mb-2">
                     <MapPin className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                     <span>{designer.location}</span>
                   </p>
 
-                  <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3">
+                  <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed mb-3">
                     {designer.bio}
                   </p>
 
@@ -275,13 +275,13 @@ export default function DesignersDirectory() {
               </div>
 
               <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-2">
-                <div className="text-xs">
+                <div className="text-sm">
                   <span className="text-gray-400 block text-[10px] uppercase">Budget Tier</span>
                   <span className="font-semibold text-gray-800">{designer.budgetTier}</span>
                 </div>
                 <Link
                   to={`/designers/${designer.id}`}
-                  className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors flex items-center gap-1"
+                  className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold transition-colors flex items-center gap-1"
                 >
                   <span>View Portfolio</span>
                   <ArrowRight className="w-3.5 h-3.5" />

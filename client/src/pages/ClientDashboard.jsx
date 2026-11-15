@@ -48,14 +48,14 @@ export default function ClientDashboard() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Client Dashboard
           </h1>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
+          <p className="text-sm sm:text-sm text-gray-500 mt-1">
             Welcome, <strong className="text-gray-800">{user?.name}</strong>. Track your project inquiries, messages, and project milestones.
           </p>
         </div>
 
         <Link
           to="/designers"
-          className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 self-start sm:self-auto transition-colors"
+          className="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold uppercase tracking-wider flex items-center gap-1.5 self-start sm:self-auto transition-colors"
         >
           <Compass className="w-4 h-4" />
           <span>Find New Architects</span>
@@ -65,21 +65,21 @@ export default function ClientDashboard() {
       {/* Stats Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-          <span className="text-xs uppercase font-semibold text-gray-400">Total Inquiries</span>
+          <span className="text-sm uppercase font-semibold text-gray-400">Total Inquiries</span>
           <p className="text-3xl font-bold text-gray-900 mt-1">{totalInquiries}</p>
-          <p className="text-xs text-gray-500 mt-1">Submitted to architecture firms</p>
+          <p className="text-sm text-gray-500 mt-1">Submitted to architecture firms</p>
         </div>
 
         <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-          <span className="text-xs uppercase font-semibold text-amber-700">Active Discussions</span>
+          <span className="text-sm uppercase font-semibold text-amber-700">Active Discussions</span>
           <p className="text-3xl font-bold text-gray-900 mt-1">{activeInquiries}</p>
-          <p className="text-xs text-emerald-600 mt-1 font-medium">Under evaluation or scope accepted</p>
+          <p className="text-sm text-emerald-600 mt-1 font-medium">Under evaluation or scope accepted</p>
         </div>
 
         <div className="p-5 rounded-xl bg-white border border-gray-200 shadow-xs">
-          <span className="text-xs uppercase font-semibold text-gray-500">Completed Contracts</span>
+          <span className="text-sm uppercase font-semibold text-gray-500">Completed Contracts</span>
           <p className="text-3xl font-bold text-gray-900 mt-1">{completedInquiries}</p>
-          <p className="text-xs text-gray-500 mt-1">Eligible for verified reviews</p>
+          <p className="text-sm text-gray-500 mt-1">Eligible for verified reviews</p>
         </div>
       </div>
 
@@ -90,24 +90,24 @@ export default function ClientDashboard() {
             <h2 className="text-xl font-bold text-gray-900">
               Your Project Inquiries
             </h2>
-            <p className="text-xs text-gray-500 mt-0.5">Real-time status updates and direct messages from architects.</p>
+            <p className="text-sm text-gray-500 mt-0.5">Real-time status updates and direct messages from architects.</p>
           </div>
         </div>
 
         {loading ? (
-          <div className="py-12 text-center text-xs text-gray-500">
+          <div className="py-12 text-center text-sm text-gray-500">
             Loading your inquiries...
           </div>
         ) : inquiries.length === 0 ? (
           <div className="py-16 text-center max-w-sm mx-auto">
             <Building className="w-12 h-12 text-gray-300 mx-auto mb-3" />
             <h3 className="text-base font-bold text-gray-800 mb-1">No Inquiries Submitted Yet</h3>
-            <p className="text-xs text-gray-500 mb-5">
+            <p className="text-sm text-gray-500 mb-5">
               Explore registered architects and send a project brief to get started.
             </p>
             <Link
               to="/designers"
-              className="px-5 py-2.5 rounded-lg bg-slate-900 text-white text-xs font-semibold inline-flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-lg bg-slate-900 text-white text-sm font-semibold inline-flex items-center gap-1.5"
             >
               <span>Browse Directory</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -123,7 +123,7 @@ export default function ClientDashboard() {
                 <div className="space-y-2 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <StatusBadge status={inq.status} />
-                    <span className="text-xs text-gray-500 font-medium">
+                    <span className="text-sm text-gray-500 font-medium">
                       • {inq.projectCategory} • Submitted on {new Date(inq.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -132,7 +132,7 @@ export default function ClientDashboard() {
                     {inq.projectTitle}
                   </h3>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-gray-600">
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
                     <span>Studio: <strong className="text-gray-900">{inq.designer?.studioName}</strong></span>
                     <span>•</span>
                     <span>Budget: {inq.budgetRange}</span>
@@ -141,7 +141,7 @@ export default function ClientDashboard() {
                   </div>
 
                   {inq.messages && inq.messages.length > 0 && (
-                    <p className="text-xs text-gray-700 italic line-clamp-1 bg-white p-2.5 rounded-lg border border-gray-200 mt-2">
+                    <p className="text-sm text-gray-700 italic line-clamp-1 bg-white p-2.5 rounded-lg border border-gray-200 mt-2">
                       Latest: "{inq.messages[0].messageText}"
                     </p>
                   )}
@@ -150,7 +150,7 @@ export default function ClientDashboard() {
                 <div className="flex sm:flex-col items-center gap-2 shrink-0 w-full sm:w-auto">
                   <Link
                     to={`/inquiries/${inq.id}`}
-                    className="flex-1 sm:flex-none py-2 px-5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors text-center"
+                    className="flex-1 sm:flex-none py-2 px-5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors text-center"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
                     <span>View Discussion</span>
@@ -158,7 +158,7 @@ export default function ClientDashboard() {
 
                   <Link
                     to={`/designers/${inq.designer?.id}`}
-                    className="py-2 px-3 rounded-lg border border-gray-300 hover:bg-gray-100 text-gray-700 text-xs font-medium flex items-center justify-center"
+                    className="py-2 px-3 rounded-lg border border-gray-300 hover:bg-gray-100 text-gray-700 text-sm font-medium flex items-center justify-center"
                     title="View Studio Profile"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />

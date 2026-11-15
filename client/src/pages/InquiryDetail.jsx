@@ -87,7 +87,7 @@ export default function InquiryDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen py-16 text-center text-xs text-gray-500">
+      <div className="min-h-screen py-16 text-center text-sm text-gray-500">
         Loading project discussion...
       </div>
     );
@@ -97,10 +97,10 @@ export default function InquiryDetail() {
     return (
       <div className="min-h-screen py-16 text-center max-w-md mx-auto px-4">
         <h2 className="text-xl font-bold text-gray-900 mb-2">Inquiry Not Found</h2>
-        <p className="text-xs text-gray-500 mb-4">{error || 'You do not have permission to view this inquiry.'}</p>
+        <p className="text-sm text-gray-500 mb-4">{error || 'You do not have permission to view this inquiry.'}</p>
         <button
           onClick={() => navigate(-1)}
-          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold"
+          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold"
         >
           Return to Dashboard
         </button>
@@ -118,7 +118,7 @@ export default function InquiryDetail() {
       <div className="flex items-center justify-between mb-6 pb-2 border-b border-gray-200">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-gray-900"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-gray-900"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Inquiries</span>
@@ -126,7 +126,7 @@ export default function InquiryDetail() {
 
         <button
           onClick={() => window.print()}
-          className="inline-flex items-center gap-1 text-xs text-gray-700 hover:text-gray-900 border border-gray-300 bg-white px-3.5 py-1.5 rounded-lg shadow-xs"
+          className="inline-flex items-center gap-1 text-sm text-gray-700 hover:text-gray-900 border border-gray-300 bg-white px-3.5 py-1.5 rounded-lg shadow-xs"
         >
           <Printer className="w-3.5 h-3.5" />
           <span>Print Scope Brief</span>
@@ -138,7 +138,7 @@ export default function InquiryDetail() {
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-xs font-bold text-amber-700 uppercase">
+              <span className="text-sm font-bold text-amber-700 uppercase">
                 {inquiry.projectCategory}
               </span>
               <span className="text-gray-300">•</span>
@@ -158,7 +158,7 @@ export default function InquiryDetail() {
                 value={inquiry.status}
                 disabled={statusUpdating}
                 onChange={(e) => handleStatusChange(e.target.value)}
-                className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-xs font-semibold text-gray-800 outline-none cursor-pointer"
+                className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-sm font-semibold text-gray-800 outline-none cursor-pointer"
               >
                 <option value="PENDING">Pending Review</option>
                 <option value="UNDER_REVIEW">Under Review</option>
@@ -171,36 +171,36 @@ export default function InquiryDetail() {
         </div>
 
         {/* Specs grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-lg bg-gray-50 border border-gray-200 text-sm text-gray-700">
           <div>
             <span className="text-[10px] text-gray-400 font-semibold uppercase block">Client</span>
             <p className="font-bold text-gray-900 mt-0.5 text-sm">{inquiry.client?.name}</p>
-            <p className="text-xs text-gray-500">{inquiry.client?.email}</p>
+            <p className="text-sm text-gray-500">{inquiry.client?.email}</p>
           </div>
           <div>
             <span className="text-[10px] text-gray-400 font-semibold uppercase block">Studio</span>
             <p className="font-bold text-gray-900 mt-0.5 text-sm">{inquiry.designer?.studioName}</p>
-            <p className="text-xs text-gray-500">{inquiry.designer?.user?.name}</p>
+            <p className="text-sm text-gray-500">{inquiry.designer?.user?.name}</p>
           </div>
           <div>
             <span className="text-[10px] text-gray-400 font-semibold uppercase block">Budget & Timeline</span>
             <p className="font-bold text-gray-900 mt-0.5 text-sm">{inquiry.budgetRange}</p>
-            <p className="text-xs text-gray-500">{inquiry.targetTimeline}</p>
+            <p className="text-sm text-gray-500">{inquiry.targetTimeline}</p>
           </div>
           <div>
             <span className="text-[10px] text-gray-400 font-semibold uppercase block">Site Location</span>
             <p className="font-bold text-gray-900 mt-0.5 text-sm">{inquiry.location}</p>
-            <p className="text-xs text-gray-500">
+            <p className="text-sm text-gray-500">
               {new Date(inquiry.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
 
         <div className="mt-5 pt-4 border-t border-gray-100">
-          <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+          <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
             Client Requirement & Scope Brief
           </h4>
-          <p className="text-xs sm:text-sm text-gray-800 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <p className="text-sm sm:text-sm text-gray-800 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200">
             {inquiry.scopeDescription}
           </p>
         </div>
@@ -212,7 +212,7 @@ export default function InquiryDetail() {
           <h3 className="text-lg font-bold text-gray-900">
             Discussion & Communication History
           </h3>
-          <span className="text-xs text-gray-400">
+          <span className="text-sm text-gray-400">
             {inquiry.messages?.length || 0} messages
           </span>
         </div>
@@ -226,7 +226,7 @@ export default function InquiryDetail() {
                 key={msg.id}
                 className={`flex flex-col ${isSender ? 'items-end' : 'items-start'}`}
               >
-                <div className="flex items-center gap-1.5 mb-1 text-xs text-gray-400 px-1">
+                <div className="flex items-center gap-1.5 mb-1 text-sm text-gray-400 px-1">
                   <span className="font-semibold text-gray-800">
                     {msg.sender?.name || (isSender ? 'You' : 'Participant')}
                   </span>
@@ -238,7 +238,7 @@ export default function InquiryDetail() {
                 </div>
 
                 <div
-                  className={`max-w-xl p-3.5 rounded-xl text-xs sm:text-sm leading-relaxed shadow-xs ${
+                  className={`max-w-xl p-3.5 rounded-xl text-sm sm:text-sm leading-relaxed shadow-xs ${
                     isSender
                       ? 'bg-slate-900 text-white rounded-tr-none'
                       : 'bg-gray-100 text-gray-900 border border-gray-200 rounded-tl-none'
@@ -260,14 +260,14 @@ export default function InquiryDetail() {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a response regarding drawings, site visit, or budget..."
-                className="w-full px-4 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
+                className="w-full px-4 py-2.5 text-sm sm:text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={sending || !newMessage.trim()}
-              className="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shrink-0 transition-colors h-[46px]"
+              className="px-6 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white text-sm font-semibold uppercase tracking-wider flex items-center gap-1.5 shrink-0 transition-colors h-[46px]"
             >
               <Send className="w-4 h-4" />
               <span>Send</span>

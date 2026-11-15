@@ -25,7 +25,7 @@ export default function DemoSwitcherPill() {
         <div className="mb-3 w-72 bg-charcoal-900 text-white rounded-2xl shadow-2xl border border-charcoal-700 p-4 transition-all animate-in fade-in slide-in-from-bottom-2">
           <div className="flex items-center justify-between pb-3 border-b border-charcoal-800">
             <div>
-              <p className="text-xs font-semibold tracking-wider uppercase text-atelier-300">Quick Persona Switcher</p>
+              <p className="text-sm font-semibold tracking-wider uppercase text-atelier-300">Quick Persona Switcher</p>
               <p className="text-[11px] text-charcoal-400">Test different role experiences</p>
             </div>
             <button
@@ -41,7 +41,7 @@ export default function DemoSwitcherPill() {
             <button
               onClick={() => handleSwitch('CLIENT')}
               disabled={loadingRole !== null}
-              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-xs transition-colors ${
+              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-sm transition-colors ${
                 user?.role === 'CLIENT'
                   ? 'bg-atelier-600 text-white font-medium ring-1 ring-atelier-400'
                   : 'bg-charcoal-800 hover:bg-charcoal-700 text-charcoal-200'
@@ -63,7 +63,7 @@ export default function DemoSwitcherPill() {
             <button
               onClick={() => handleSwitch('DESIGNER')}
               disabled={loadingRole !== null}
-              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-xs transition-colors ${
+              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-sm transition-colors ${
                 user?.role === 'DESIGNER'
                   ? 'bg-atelier-600 text-white font-medium ring-1 ring-atelier-400'
                   : 'bg-charcoal-800 hover:bg-charcoal-700 text-charcoal-200'
@@ -85,7 +85,7 @@ export default function DemoSwitcherPill() {
             <button
               onClick={() => handleSwitch('ADMIN')}
               disabled={loadingRole !== null}
-              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-xs transition-colors ${
+              className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left text-sm transition-colors ${
                 user?.role === 'ADMIN'
                   ? 'bg-atelier-600 text-white font-medium ring-1 ring-atelier-400'
                   : 'bg-charcoal-800 hover:bg-charcoal-700 text-charcoal-200'
@@ -121,7 +121,7 @@ export default function DemoSwitcherPill() {
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2.5 bg-charcoal-900 hover:bg-charcoal-800 text-white rounded-full shadow-xl border border-charcoal-700 hover:border-atelier-400 transition-all text-xs font-medium group"
+        className="flex items-center gap-2 px-4 py-2.5 bg-charcoal-900 hover:bg-charcoal-800 text-white rounded-full shadow-xl border border-charcoal-700 hover:border-atelier-400 transition-all text-sm font-medium group"
       >
         <span className="flex h-2 w-2 relative">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-atelier-400 opacity-75"></span>

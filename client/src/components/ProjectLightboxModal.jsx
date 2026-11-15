@@ -91,16 +91,16 @@ export default function ProjectLightboxModal({ project, isOpen, onClose }) {
           <div className="p-5 bg-white flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-gray-200">
             <div className="space-y-4">
               <div>
-                <h4 className="text-xs uppercase font-semibold text-gray-500 mb-1">
+                <h4 className="text-sm uppercase font-semibold text-gray-500 mb-1">
                   Project Concept & Scope
                 </h4>
-                <p className="text-xs text-gray-700 leading-relaxed">
+                <p className="text-sm text-gray-700 leading-relaxed">
                   {project.description}
                 </p>
               </div>
 
               {/* Specs Table */}
-              <div className="p-3.5 rounded-lg bg-gray-50 border border-gray-200 space-y-2 text-xs">
+              <div className="p-3.5 rounded-lg bg-gray-50 border border-gray-200 space-y-2 text-sm">
                 <div className="flex justify-between py-1 border-b border-gray-200">
                   <span className="text-gray-500">Location:</span>
                   <span className="font-medium text-gray-800">{project.location || 'Assigned'}</span>
@@ -125,12 +125,12 @@ export default function ProjectLightboxModal({ project, isOpen, onClose }) {
 
               {project.designer && (
                 <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
+                  <div className="w-8 h-8 rounded bg-slate-900 text-white flex items-center justify-center font-bold text-sm">
                     <Building className="w-4 h-4 text-amber-400" />
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-500 uppercase font-medium">Architectural Practice</p>
-                    <p className="text-xs font-bold text-gray-900">{project.designer.studioName}</p>
+                    <p className="text-sm font-bold text-gray-900">{project.designer.studioName}</p>
                   </div>
                 </div>
               )}
@@ -139,7 +139,7 @@ export default function ProjectLightboxModal({ project, isOpen, onClose }) {
             <div className="pt-4">
               <button
                 onClick={onClose}
-                className="w-full py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-800 transition-colors"
+                className="w-full py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-sm font-semibold text-gray-800 transition-colors"
               >
                 Close Gallery
               </button>

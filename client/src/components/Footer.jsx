@@ -17,10 +17,10 @@ export default function Footer() {
                 Arch<span className="text-amber-500">Connect</span>
               </span>
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-400 leading-relaxed">
               Online portfolio and client connection portal for registered architects, interior design studios, and property owners.
             </p>
-            <div className="pt-1 text-xs text-amber-400 flex items-center gap-1.5">
+            <div className="pt-1 text-sm text-amber-400 flex items-center gap-1.5">
               <Award className="w-4 h-4 text-amber-400 shrink-0" />
               <span>Aligned with Council of Architecture (COA) Guidelines</span>
             </div>
@@ -28,8 +28,8 @@ export default function Footer() {
 
           {/* Specializations */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-3">Disciplines</h4>
-            <ul className="space-y-2 text-xs text-gray-400">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-white mb-3">Disciplines</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
               <li><Link to="/designers?specialization=Residential" className="hover:text-white transition-colors">Residential Architecture</Link></li>
               <li><Link to="/designers?specialization=Apartment" className="hover:text-white transition-colors">Apartment & Penthouse Interiors</Link></li>
               <li><Link to="/designers?specialization=Commercial" className="hover:text-white transition-colors">Commercial & Office Workspaces</Link></li>
@@ -40,8 +40,8 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-3">Portal Navigation</h4>
-            <ul className="space-y-2 text-xs text-gray-400">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-white mb-3">Portal Navigation</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
               <li><Link to="/designers" className="hover:text-white transition-colors">Explore All Designers</Link></li>
               <li><Link to="/login" className="hover:text-white transition-colors">Sign In</Link></li>
               <li><Link to="/register" className="hover:text-white transition-colors">Register as Architect / Client</Link></li>
@@ -52,7 +52,7 @@ export default function Footer() {
 
           {/* Regulatory Context */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-3">Professional Bodies</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-white mb-3">Professional Bodies</h4>
             <div className="space-y-2 text-[11px] text-gray-400">
               <p className="border-l-2 border-amber-500 pl-2">
                 <strong className="text-gray-200 block">Council of Architecture (COA)</strong>
@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500 gap-2">
           <p>© {new Date().getFullYear()} ArchConnect Portal. Architect & Interior Designer Portfolio & Client Connect Portal.</p>
           <p className="text-gray-400">Full Screen Responsive Architecture Web Application.</p>
         </div>

@@ -80,13 +80,13 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
           <h3 className="text-xl font-bold text-gray-900">
             Send Inquiry to {designer.studioName}
           </h3>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             Principal: {designer.user?.name} • Base: {designer.location}
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+          <div className="mb-4 p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -96,12 +96,12 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
           <div className="py-10 text-center space-y-2">
             <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
             <h4 className="text-base font-bold text-gray-900">Inquiry Sent Successfully</h4>
-            <p className="text-xs text-gray-500">Redirecting to project communication thread...</p>
+            <p className="text-sm text-gray-500">Redirecting to project communication thread...</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Project Name / Scope Summary *
               </label>
               <input
@@ -110,21 +110,21 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
                 value={formData.projectTitle}
                 onChange={handleChange}
                 placeholder="e.g. 4BHK Villa Construction on 2400 sq.ft plot, 3BHK Flat Renovation"
-                className="w-full px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
+                className="w-full px-3 py-2 text-sm sm:text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
                 required
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Project Category
                 </label>
                 <select
                   name="projectCategory"
                   value={formData.projectCategory}
                   onChange={handleChange}
-                  className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
+                  className="w-full px-2.5 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
                 >
                   <option value="Residential Villa Construction">Residential Villa Construction</option>
                   <option value="Apartment Interior Design">Apartment Interior Design</option>
@@ -135,7 +135,7 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Site City / Location *
                 </label>
                 <input
@@ -144,7 +144,7 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
                   value={formData.location}
                   onChange={handleChange}
                   placeholder="e.g. Whitefield Bangalore, Worli Mumbai"
-                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none"
                   required
                 />
               </div>
@@ -152,14 +152,14 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Estimated Budget
                 </label>
                 <select
                   name="budgetRange"
                   value={formData.budgetRange}
                   onChange={handleChange}
-                  className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
+                  className="w-full px-2.5 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
                 >
                   <option value="Under ₹25 Lakhs">Under ₹25 Lakhs (Interiors / Consultation)</option>
                   <option value="₹25 Lakhs - ₹50 Lakhs">₹25 Lakhs - ₹50 Lakhs (2BHK/3BHK Renovation)</option>
@@ -170,14 +170,14 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Target Timeline
                 </label>
                 <select
                   name="targetTimeline"
                   value={formData.targetTimeline}
                   onChange={handleChange}
-                  className="w-full px-2.5 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
+                  className="w-full px-2.5 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none bg-white"
                 >
                   <option value="Immediate (1-2 months)">Immediate (1-2 months)</option>
                   <option value="3 - 6 Months">3 - 6 Months</option>
@@ -188,7 +188,7 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-sm font-semibold text-gray-700 mb-1">
                 Detailed Scope of Work & Requirements *
               </label>
               <textarea
@@ -197,7 +197,7 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
                 value={formData.scopeDescription}
                 onChange={handleChange}
                 placeholder="Mention plot dimensions or apartment carpet area, number of bedrooms, floor requirements, and key priorities (courtyard, modular kitchen, balcony, site supervision)..."
-                className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-slate-900 outline-none resize-none"
                 required
               />
             </div>
@@ -211,14 +211,14 @@ export default function InquiryModal({ designer, isOpen, onClose, onSuccess }) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900"
+                  className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
+                  className="px-5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold uppercase tracking-wider flex items-center gap-1.5 transition-colors"
                 >
                   {loading ? 'Sending...' : (
                     <>

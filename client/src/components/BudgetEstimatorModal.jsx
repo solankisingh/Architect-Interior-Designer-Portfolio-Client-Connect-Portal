@@ -56,14 +56,14 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
         </button>
 
         <div className="mb-6">
-          <span className="text-xs uppercase tracking-widest text-atelier-700 font-semibold block mb-1 flex items-center gap-1.5">
+          <span className="text-sm uppercase tracking-widest text-atelier-700 font-semibold block mb-1 flex items-center gap-1.5">
             <Calculator className="w-4 h-4 text-atelier-600" />
             Architectural Cost Estimator
           </span>
           <h3 className="font-serif text-2xl sm:text-3xl font-bold text-charcoal-950">
             Estimate Project Budget
           </h3>
-          <p className="text-xs text-charcoal-500 mt-1">
+          <p className="text-sm text-charcoal-500 mt-1">
             Calculate estimated design consulting fees and execution budgets based on scale and materiality.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
         <div className="space-y-5">
           {/* Project Type */}
           <div>
-            <label className="block text-xs font-semibold text-charcoal-700 mb-1.5">
+            <label className="block text-sm font-semibold text-charcoal-700 mb-1.5">
               Project Topology
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -85,7 +85,7 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
                   key={t.id}
                   type="button"
                   onClick={() => setProjectType(t.id)}
-                  className={`p-2.5 rounded-xl border text-xs font-semibold text-center transition-all ${
+                  className={`p-2.5 rounded-xl border text-sm font-semibold text-center transition-all ${
                     projectType === t.id
                       ? 'border-atelier-600 bg-atelier-100/70 text-charcoal-950 shadow-sm'
                       : 'border-atelier-200 bg-white text-charcoal-600 hover:bg-atelier-50'
@@ -101,10 +101,10 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
           {/* Area Slider */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-charcoal-700">
+              <label className="text-sm font-semibold text-charcoal-700">
                 Built-Up Floor Area
               </label>
-              <span className="text-xs font-bold text-atelier-800 bg-atelier-100 px-2.5 py-0.5 rounded-md">
+              <span className="text-sm font-bold text-atelier-800 bg-atelier-100 px-2.5 py-0.5 rounded-md">
                 {areaSqFt.toLocaleString()} sq ft
               </span>
             </div>
@@ -127,7 +127,7 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
 
           {/* Quality Tier */}
           <div>
-            <label className="block text-xs font-semibold text-charcoal-700 mb-1.5">
+            <label className="block text-sm font-semibold text-charcoal-700 mb-1.5">
               Materiality & Finish Tier
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -146,7 +146,7 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
                       : 'border-atelier-200 bg-white text-charcoal-600 hover:bg-atelier-50'
                   }`}
                 >
-                  <p className="text-xs font-bold">{f.name}</p>
+                  <p className="text-sm font-bold">{f.name}</p>
                   <p className="text-[10px] text-charcoal-400 mt-0.5">{f.desc}</p>
                 </button>
               ))}
@@ -162,7 +162,7 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
               onChange={(e) => setIncludeLandscape(e.target.checked)}
               className="rounded border-atelier-300 text-atelier-600"
             />
-            <label htmlFor="landscape" className="text-xs text-charcoal-700 cursor-pointer">
+            <label htmlFor="landscape" className="text-sm text-charcoal-700 cursor-pointer">
               Include Landscape, Courtyards & Outdoor Living spaces (+10%)
             </label>
           </div>
@@ -178,12 +178,12 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
                   {formatCurrency(estimatedDesignConsultingFee)}
                 </p>
               </div>
-              <span className="px-3 py-1 rounded-full bg-atelier-800 text-atelier-200 text-xs font-bold uppercase tracking-wider">
+              <span className="px-3 py-1 rounded-full bg-atelier-800 text-atelier-200 text-sm font-bold uppercase tracking-wider">
                 {getRecommendedBudgetTier()} Tier Studios
               </span>
             </div>
 
-            <div className="flex items-center justify-between text-xs text-charcoal-300">
+            <div className="flex items-center justify-between text-sm text-charcoal-300">
               <span>Estimated Total Project Turnkey Execution:</span>
               <span className="font-bold text-white text-sm">
                 {formatCurrency(estimatedExecutionTotal * 0.9)} - {formatCurrency(estimatedExecutionTotal * 1.15)}
@@ -196,14 +196,14 @@ export default function BudgetEstimatorModal({ isOpen, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="text-xs text-charcoal-500 hover:text-charcoal-800 font-medium"
+              className="text-sm text-charcoal-500 hover:text-charcoal-800 font-medium"
             >
               Close
             </button>
             <button
               type="button"
               onClick={handleFindStudios}
-              className="px-6 py-3 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-atelier-100 text-xs font-semibold uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
+              className="px-6 py-3 rounded-xl bg-charcoal-900 hover:bg-charcoal-800 text-atelier-100 text-sm font-semibold uppercase tracking-wider flex items-center gap-2 shadow-md transition-all"
             >
               <span>Explore {getRecommendedBudgetTier()} Tier Studios</span>
               <ArrowRight className="w-4 h-4" />

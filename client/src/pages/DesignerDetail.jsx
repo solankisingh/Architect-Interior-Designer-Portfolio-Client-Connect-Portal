@@ -53,7 +53,7 @@ export default function DesignerDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen py-16 text-center text-xs text-gray-500">
+      <div className="min-h-screen py-16 text-center text-sm text-gray-500">
         Loading studio portfolio...
       </div>
     );
@@ -63,10 +63,10 @@ export default function DesignerDetail() {
     return (
       <div className="min-h-screen py-16 text-center max-w-md mx-auto px-4">
         <h2 className="text-xl font-bold text-gray-900 mb-2">Profile Not Found</h2>
-        <p className="text-xs text-gray-500 mb-4">{error || 'This profile does not exist.'}</p>
+        <p className="text-sm text-gray-500 mb-4">{error || 'This profile does not exist.'}</p>
         <Link
           to="/designers"
-          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold inline-flex items-center gap-1.5"
+          className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold inline-flex items-center gap-1.5"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Directory</span>
@@ -94,7 +94,7 @@ export default function DesignerDetail() {
         <div className="absolute top-4 left-6 sm:left-12">
           <Link
             to="/designers"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 hover:bg-black/80 text-white text-xs backdrop-blur-xs transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 hover:bg-black/80 text-white text-sm backdrop-blur-xs transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to All Studios</span>
@@ -130,12 +130,12 @@ export default function DesignerDetail() {
                   {designer.studioName}
                 </h1>
                 {designer.tagline && (
-                  <p className="text-xs text-gray-600 italic">
+                  <p className="text-sm text-gray-600 italic">
                     "{designer.tagline}"
                   </p>
                 )}
 
-                <p className="text-xs text-gray-500 flex flex-wrap items-center gap-3 pt-1">
+                <p className="text-sm text-gray-500 flex flex-wrap items-center gap-3 pt-1">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-gray-400" />
                     {designer.location}
@@ -160,7 +160,7 @@ export default function DesignerDetail() {
 
               <button
                 onClick={() => setInquiryModalOpen(true)}
-                className="px-6 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+                className="px-6 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors shadow-xs"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Send Project Inquiry</span>
@@ -170,7 +170,7 @@ export default function DesignerDetail() {
 
           {/* Accreditation details */}
           {designer.accreditations && (
-            <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center gap-2 text-xs text-gray-700">
+            <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center gap-2 text-sm text-gray-700">
               <Award className="w-4 h-4 text-slate-700 shrink-0" />
               <span className="font-semibold text-gray-900">Statutory Accreditation:</span>
               <span className="px-2 py-0.5 rounded bg-gray-100 font-medium text-gray-800">
@@ -181,10 +181,10 @@ export default function DesignerDetail() {
 
           {/* Bio */}
           <div className="mt-5 pt-4 border-t border-gray-100">
-            <h3 className="text-xs uppercase font-semibold text-gray-400 tracking-wider mb-1.5">
+            <h3 className="text-sm uppercase font-semibold text-gray-400 tracking-wider mb-1.5">
               About the Firm
             </h3>
-            <p className="text-xs sm:text-sm text-gray-700 leading-relaxed max-w-5xl">
+            <p className="text-sm sm:text-sm text-gray-700 leading-relaxed max-w-5xl">
               {designer.bio}
             </p>
           </div>
@@ -197,7 +197,7 @@ export default function DesignerDetail() {
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                 Completed Projects ({designer.projects?.length || 0})
               </h2>
-              <p className="text-xs text-gray-500">Click on any project to inspect photo gallery and design specifications.</p>
+              <p className="text-sm text-gray-500">Click on any project to inspect photo gallery and design specifications.</p>
             </div>
 
             {categories.length > 1 && (
@@ -206,7 +206,7 @@ export default function DesignerDetail() {
                   <button
                     key={c}
                     onClick={() => setSelectedCategory(c)}
-                    className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                    className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                       selectedCategory === c
                         ? 'bg-slate-900 text-white'
                         : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-100'
@@ -245,13 +245,13 @@ export default function DesignerDetail() {
                     <h3 className="text-base font-bold text-gray-900 group-hover:text-amber-700 transition-colors mb-1.5">
                       {p.title}
                     </h3>
-                    <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed mb-3">
+                    <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed mb-3">
                       {p.description}
                     </p>
                   </div>
                 </div>
 
-                <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between text-xs text-gray-500">
+                <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between text-sm text-gray-500">
                   <span>{p.location}</span>
                   <div className="flex items-center gap-2">
                     {p.areaSqFt && <span className="font-semibold text-gray-700">{p.areaSqFt}</span>}
@@ -270,12 +270,12 @@ export default function DesignerDetail() {
               <h2 className="text-xl font-bold text-gray-900">
                 Client Reviews ({designer.reviews?.length || 0})
               </h2>
-              <p className="text-xs text-gray-500">Verified feedback from completed architectural and interior contracts.</p>
+              <p className="text-sm text-gray-500">Verified feedback from completed architectural and interior contracts.</p>
             </div>
 
             <button
               onClick={() => setReviewModalOpen(true)}
-              className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 text-xs font-semibold text-gray-800 transition-colors self-start sm:self-auto"
+              className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 text-sm font-semibold text-gray-800 transition-colors self-start sm:self-auto"
             >
               Write a Client Review
             </button>
@@ -302,15 +302,15 @@ export default function DesignerDetail() {
                       </span>
                     </div>
 
-                    <h4 className="text-xs sm:text-sm font-bold text-gray-900 mb-1">
+                    <h4 className="text-sm sm:text-sm font-bold text-gray-900 mb-1">
                       "{r.reviewTitle}"
                     </h4>
-                    <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                    <p className="text-sm text-gray-600 leading-relaxed mb-3">
                       {r.comment}
                     </p>
                   </div>
 
-                  <div className="pt-2 border-t border-gray-200 text-xs flex items-center justify-between">
+                  <div className="pt-2 border-t border-gray-200 text-sm flex items-center justify-between">
                     <span className="font-semibold text-gray-800">{r.client?.name || 'Verified Client'}</span>
                     <span className="text-[10px] text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">
                       {r.projectCategory || 'Commissioned Scope'}
@@ -320,7 +320,7 @@ export default function DesignerDetail() {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-gray-500 py-6 text-center">No client reviews submitted yet.</p>
+            <p className="text-sm text-gray-500 py-6 text-center">No client reviews submitted yet.</p>
           )}
         </div>
       </div>

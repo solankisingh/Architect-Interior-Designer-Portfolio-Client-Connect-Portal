@@ -59,192 +59,194 @@ export default function AuthPage({ defaultMode = 'login' }) {
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] w-full bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <div className="max-w-md w-full">
+    <div className="min-h-[calc(100vh-72px)] w-full bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-lg w-full">
         {/* Header */}
-        <div className="text-center mb-6">
-          <Link to="/" className="inline-flex items-center gap-2 mb-3">
-            <div className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold">
+        <div className="text-center mb-8">
+          <Link to="/" className="inline-flex items-center gap-2.5 mb-4">
+            <div className="w-10 h-10 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold">
               <Building className="w-5 h-5 text-amber-400" />
             </div>
-            <span className="text-2xl font-bold text-gray-900 font-sans">
+            <span className="text-2xl sm:text-3xl font-bold text-gray-900 font-sans tracking-tight">
               Arch<span className="text-amber-600">Connect</span>
             </span>
           </Link>
-          <h2 className="text-2xl font-bold text-gray-900">
-            {mode === 'login' ? 'Sign In' : 'Create an Account'}
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            {mode === 'login' ? 'Sign in to your account' : 'Create an account'}
           </h2>
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-sm text-gray-600 mt-2">
             {mode === 'login'
               ? 'Enter your email and password to access your portal'
-              : 'Register as a client or architecture / interior design professional'}
+              : 'Register as a client looking for architects, or as a design professional'}
           </p>
         </div>
 
-        {/* Card Form */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6 sm:p-8 shadow-xs">
+        {/* Outer Card with increased height and spacious padding */}
+        <div className="bg-white border border-gray-200 rounded-2xl p-8 sm:p-10 shadow-sm min-h-[560px] flex flex-col justify-between">
           {/* Switch Tab */}
-          <div className="flex border-b border-gray-200 mb-6">
-            <button
-              type="button"
-              onClick={() => { setMode('login'); setError(''); }}
-              className={`flex-1 pb-2.5 text-xs font-semibold text-center border-b-2 transition-colors ${
-                mode === 'login'
-                  ? 'border-slate-900 text-slate-900'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
-              }`}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              onClick={() => { setMode('register'); setError(''); }}
-              className={`flex-1 pb-2.5 text-xs font-semibold text-center border-b-2 transition-colors ${
-                mode === 'register'
-                  ? 'border-slate-900 text-slate-900'
-                  : 'border-transparent text-gray-500 hover:text-gray-800'
-              }`}
-            >
-              Register
-            </button>
-          </div>
-
-          {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{error}</span>
+          <div>
+            <div className="flex border-b border-gray-200 mb-6">
+              <button
+                type="button"
+                onClick={() => { setMode('login'); setError(''); }}
+                className={`flex-1 pb-3 text-sm font-semibold text-center border-b-2 transition-colors ${
+                  mode === 'login'
+                    ? 'border-slate-900 text-slate-900 font-bold'
+                    : 'border-transparent text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMode('register'); setError(''); }}
+                className={`flex-1 pb-3 text-sm font-semibold text-center border-b-2 transition-colors ${
+                  mode === 'register'
+                    ? 'border-slate-900 text-slate-900 font-bold'
+                    : 'border-transparent text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                Register
+              </button>
             </div>
-          )}
 
-          <form onSubmit={handleAuthSubmit} className="space-y-4">
-            {mode === 'register' && (
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                  Registering as:
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setRole('CLIENT')}
-                    className={`py-2 px-3 rounded-lg border text-xs font-medium text-center transition-colors ${
-                      role === 'CLIENT'
-                        ? 'border-slate-900 bg-slate-50 text-slate-900 font-semibold'
-                        : 'border-gray-200 text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    Client / Homeowner
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRole('DESIGNER')}
-                    className={`py-2 px-3 rounded-lg border text-xs font-medium text-center transition-colors ${
-                      role === 'DESIGNER'
-                        ? 'border-slate-900 bg-slate-50 text-slate-900 font-semibold'
-                        : 'border-gray-200 text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    Architect / Designer
-                  </button>
-                </div>
+            {error && (
+              <div className="mb-5 p-3.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 
-            {mode === 'register' && (
-              <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter full name"
-                  className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
-                  required
-                />
-              </div>
-            )}
-
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="name@example.com"
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="••••••••"
-                className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs sm:text-sm focus:border-slate-900 outline-none"
-                required
-              />
-            </div>
-
-            {/* Extra fields for Designer Registration */}
-            {mode === 'register' && role === 'DESIGNER' && (
-              <div className="space-y-3 pt-2 border-t border-gray-100">
+            <form onSubmit={handleAuthSubmit} className="space-y-5">
+              {mode === 'register' && (
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">Studio / Firm Name</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    I am registering as:
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setRole('CLIENT')}
+                      className={`py-2.5 px-3 rounded-lg border text-sm font-medium text-center transition-colors ${
+                        role === 'CLIENT'
+                          ? 'border-slate-900 bg-slate-50 text-slate-900 font-bold'
+                          : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
+                      Client / Homeowner
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setRole('DESIGNER')}
+                      className={`py-2.5 px-3 rounded-lg border text-sm font-medium text-center transition-colors ${
+                        role === 'DESIGNER'
+                          ? 'border-slate-900 bg-slate-50 text-slate-900 font-bold'
+                          : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                      }`}
+                    >
+                      Architect / Designer
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {mode === 'register' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
                   <input
                     type="text"
-                    name="studioName"
-                    value={formData.studioName}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
-                    placeholder="e.g. Design Atelier"
-                    className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
+                    placeholder="Enter full name"
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
                     required
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="name@example.com"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
+                  required
+                />
+              </div>
+
+              {/* Extra fields for Designer Registration */}
+              {mode === 'register' && role === 'DESIGNER' && (
+                <div className="space-y-4 pt-3 border-t border-gray-100">
                   <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">City</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Studio / Firm Name</label>
                     <input
                       type="text"
-                      name="location"
-                      value={formData.location}
+                      name="studioName"
+                      value={formData.studioName}
                       onChange={handleChange}
-                      placeholder="e.g. Mumbai, Bangalore"
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
+                      placeholder="e.g. Design Atelier"
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
                       required
                     />
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Experience (Years)</label>
-                    <input
-                      type="number"
-                      name="experienceYears"
-                      value={formData.experienceYears}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 rounded-lg border border-gray-300 text-xs focus:border-slate-900 outline-none"
-                    />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">City</label>
+                      <input
+                        type="text"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        placeholder="e.g. Mumbai, Bangalore"
+                        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Experience (Years)</label>
+                      <input
+                        type="number"
+                        name="experienceYears"
+                        value={formData.experienceYears}
+                        onChange={handleChange}
+                        className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-slate-900 outline-none"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 mt-3"
-            >
-              {loading ? 'Please wait...' : (
-                <>
-                  <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </>
               )}
-            </button>
-          </form>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold tracking-wide transition-colors flex items-center justify-center gap-2 mt-4 shadow-xs"
+              >
+                {loading ? 'Please wait...' : (
+                  <>
+                    <span>{mode === 'login' ? 'Sign In to Portal' : 'Create Free Account'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
