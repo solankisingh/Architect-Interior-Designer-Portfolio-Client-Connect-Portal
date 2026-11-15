@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node dev.js",
     "start": "node start.js",
-    "build": "node client/node_modules/vite/bin/vite.js build client --config client/vite.config.js",
+    "build": "node build.js",
     "seed": "node server/prisma/seed.js"
   }
 }

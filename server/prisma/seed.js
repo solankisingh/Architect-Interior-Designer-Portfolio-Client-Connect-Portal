@@ -7,19 +7,14 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('--- Populating ArchConnect with Real Verified Professional & Portfolio Data ---');
 
-  // Preserve existing registered user (e.g. Lakhwinder Singh) if present
+  // Preserve genuine registered client users (e.g. Lakhwinder Singh) if present
   const existingUsers = await prisma.user.findMany({
     where: {
+      role: 'CLIENT',
       email: {
         notIn: [
-          'admin@architectportal.com',
           'client@architectportal.com',
-          'designer@architectportal.com',
-          'vikram.mehta@gmail.com',
-          'ananya@kulkarnidesign.com',
-          'siddharth@atelierjoshi.com',
-          'rohan@studiocasagoa.com',
-          'meera@prakritidesign.in'
+          'vikram.mehta@gmail.com'
         ]
       }
     }
