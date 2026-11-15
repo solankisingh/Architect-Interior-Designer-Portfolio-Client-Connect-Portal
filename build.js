@@ -12,11 +12,11 @@ function run(command, cwd) {
 }
 
 try {
-  // 1. Install server dependencies
+  // 1. Install server dependencies (including prisma)
   console.log('\n📦 Installing Server Dependencies...');
-  run('npm install', serverDir);
+  run('npm install --include=dev', serverDir);
 
-  // 2. Generate Prisma Client & Push DB schema (using direct node binary to avoid shell path quirks)
+  // 2. Generate Prisma Client & Push DB schema
   console.log('\n🗄️ Setting up Database with Prisma...');
   const prismaBin = path.join('node_modules', 'prisma', 'build', 'index.js');
   run(`node "${prismaBin}" generate`, serverDir);
@@ -26,9 +26,9 @@ try {
   console.log('\n🌱 Seeding Database with Real Profiles...');
   run('node prisma/seed.js', serverDir);
 
-  // 4. Install client dependencies & build frontend
+  // 4. Install client dependencies (including vite & tailwind) & build frontend
   console.log('\n🎨 Installing Client Dependencies & Building UI...');
-  run('npm install', clientDir);
+  run('npm install --include=dev', clientDir);
   const viteBin = path.join('node_modules', 'vite', 'bin', 'vite.js');
   run(`node "${viteBin}" build`, clientDir);
 
